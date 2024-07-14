@@ -1,0 +1,60 @@
+<div class="main-container">
+  <span class="form-title">Add Course</span>
+  <div class="form-container">
+    <form class="form-frame" [formGroup]="myForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutGap="16px">
+      <div class="input-error-container">
+        <div class="input-frame">
+          <input
+            type="text"
+            formControlName="courseName"
+            id="courseName"
+            class="form-item"
+            placeholder="Enter Course Name"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div
+          class="custom-error"
+          [class.expanded]="
+            myForm.controls['courseName'].errors &&
+            (formSubmitted || myForm.get('courseName')?.dirty)
+          "
+        >
+          Course name is required and must be at least 3 characters long.
+        </div>
+      </div>
+      <div class="input-error-container">
+        <div class="input-frame">
+          <input
+            type="text"
+            formControlName="teacherId"
+            id="teacherId"
+            class="form-item"
+            placeholder="Enter Teacher ID"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div
+          class="custom-error"
+          [class.expanded]="
+            myForm.controls['teacherId'].errors &&
+            (formSubmitted || myForm.get('teacherId')?.dirty)
+          "
+        >
+          Enter a valid Teacher Id.
+        </div>
+      </div>
+      <div class="button-container">
+        <button
+          class="form-button"
+          type="submit"
+          [ngStyle]="{ width: btnWidth, height: btnHeight }"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

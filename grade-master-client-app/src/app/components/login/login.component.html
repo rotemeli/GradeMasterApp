@@ -1,0 +1,20 @@
+<form form class="form-frame" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <input
+    type="text"
+    id="username"
+    formControlName="username"
+    class="form-item"
+    placeholder="Username"
+    autocomplete="off"
+    required
+  />
+  <input
+    type="password"
+    id="password"
+    formControlName="password"
+    class="form-item"
+    placeholder="Password"
+    required
+  />
+  <button class="form-button" type="submit">Login</button>
+</form>

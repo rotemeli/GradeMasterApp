@@ -1,0 +1,17 @@
+<div class="main-container container mt-5" fxLayoutAlign="space-evenly start">
+  <div fxLayout="column" fxLayoutGap="10px">
+    <div class="title-container">
+      <h1>Grade Master Application</h1>
+    </div>
+    <p class="lead">
+      Discover a seamless way to manage your classroom and stay organized. With
+      Grade Master, you have all the tools you need right at your fingertips.
+      Simply log in to access your personalized dashboard, where you can:
+    </p>
+    <div fxLayoutAlign="center">
+      <ul fxLayout="column" fxLayoutAlign="start">
+        <li *ngFor="let item of descriptionItems">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
