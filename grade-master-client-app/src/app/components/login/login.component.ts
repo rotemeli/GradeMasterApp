@@ -1,37 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CourseService } from '../../services/course.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AccountService } from '../../services/account.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
-export class LoginComponent {
-  constructor(private _courseService: CourseService) {}
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+  constructor(
+    private _accountSvc: AccountService,
+    private _router: Router,
+    private _toastr: ToastrService
+  ) {}
 
-  loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-  });
-
-  onLogin(): void {
-    this._courseService.getCourses().pipe(untilDestroyed(this)).subscribe({
-      next: res => console.log(res),
-      error: error => console.log(error)
+  ngOnInit(): void {
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     });
+  }
 
-    // this._courseService.postCourse().pipe(untilDestroyed(this)).subscribe({
-    //   next: res => console.log(res),
-    //   error: error => console.log(error)
-    // });
+  login() {
+    if (!this.loginForm.valid) return;
+    this._accountSvc
+      .login(this.loginForm.value)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (_) => {
+          this._router.navigateByUrl('/courses');
+        },
+        error: (error) => {
+          this._toastr.error(error.error.message);
+          console.log(error);
+        },
+      });
   }
 }

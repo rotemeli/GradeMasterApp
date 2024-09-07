@@ -1,0 +1,79 @@
+<mat-card
+  class="main-card"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="18px"
+>
+  <mat-card-title>Add New Student</mat-card-title>
+  <mat-card-content class="full-width">
+    <form
+      [formGroup]="studentForm"
+      (ngSubmit)="onSubmit()"
+      fxLayout="column"
+      fxLayoutGap="32px"
+    >
+      <!-- First Name Field -->
+      <mat-form-field appearance="outline">
+        <mat-label>Student First Name</mat-label>
+        <mat-icon matPrefix>school</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="First Name"
+          name="firstName"
+          formControlName="firstName"
+        />
+        <mat-error *ngIf="studentForm.get('firstName')?.hasError">
+          Student First Name is required and must contain at least 2 characters
+          without special characters.
+        </mat-error>
+      </mat-form-field>
+      <!-- Last Name Field -->
+      <mat-form-field appearance="outline">
+        <mat-label>Student Last Name</mat-label>
+        <mat-icon matPrefix>description</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="Last Name"
+          name="lastName"
+          formControlName="lastName"
+        />
+        <mat-error *ngIf="studentForm.get('lastName')?.hasError">
+          Student Last Name is required and must contain at least 2 characters
+          without special characters.
+        </mat-error>
+      </mat-form-field>
+      <!-- Id Field -->
+      <mat-form-field appearance="outline">
+        <mat-label>Student Id</mat-label>
+        <mat-icon matPrefix>event</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="Id"
+          name="id"
+          formControlName="id"
+        />
+        <mat-error *ngIf="studentForm.get('id')?.hasError">
+          Student Id is required and must contain only digits.
+        </mat-error>
+      </mat-form-field>
+      <div
+        *ngIf="isLoading"
+        class="spinner-container"
+        fxLayoutAlign="center center"
+      >
+        <mat-spinner></mat-spinner>
+      </div>
+      <div fxLayoutGap="16px" fxLayoutAlign="center stretch">
+        <button mat-raised-button type="submit" [disabled]="isLoading">
+          Submit
+        </button>
+        <button mat-button (click)="onCancel()" [disabled]="isLoading">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

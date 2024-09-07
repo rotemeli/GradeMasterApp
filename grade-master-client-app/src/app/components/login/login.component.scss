@@ -12,7 +12,7 @@
     outline: none;
     box-sizing: border-box;
     &:focus {
-      border: 2px solid #66bb6a;
+      border: 2px solid #41a447;
     }
   }
   .form-button {
@@ -22,13 +22,13 @@
     font-family: "Almarai", sans-serif;
     color: white;
     font-weight: 700;
-    background-color: #66bb6a;
-    border: 2px solid #66bb6a;
+    background-color: #41a447;
+    border: 2px solid #41a447;
     transition: background-color 0.3s ease, color 0.3s ease;
     cursor: pointer;
     &:hover {
       background-color: white;
-      color: #66bb6a;
+      color: #41a447;
     }
   }
 }

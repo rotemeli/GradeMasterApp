@@ -1,4 +1,13 @@
 export interface Course {
-    id: number;
-    title: string;
+  id: string;
+  teacherId: string;
+  courseName: string;
+  description: string;
+  numberOfLectures: string;
+}
+
+export interface Mock {
+  id: string;
+  title: string;
+  description: string;
 }

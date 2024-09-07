@@ -1,5 +1,6 @@
 .main-container {
     background-color: #8c8888;
+    margin-bottom: 10px;
     .nav-bar {
         padding: 5px 40px;
         .nav-bar-items {
@@ -26,4 +27,21 @@
             }
         }
     }
+}
+
+.user-dropdown {
+    .user-button {
+        .user-email {
+            font-size: 14px;
+            font-weight: 700;
+        }
+    }
+}
+
+.mat-mdc-menu-panel {
+    background-color: #c8ffc0 !important;
+}
+
+.setting-btn {
+    text-decoration: none;
 }

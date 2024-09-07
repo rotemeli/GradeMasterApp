@@ -1,0 +1,85 @@
+<div
+  class="course-details-container"
+  fxLayout="column"
+  fxLayoutGap="20px"
+  fxLayoutAlign="start stretch"
+>
+  <ng-container *ngIf="isLoading; else details">
+    <div fxLayoutAlign="center center" fxLayoutGap="8px">
+      <mat-spinner></mat-spinner>
+      <p class="loading-text">Loading...</p>
+    </div>
+  </ng-container>
+
+  <ng-template #details>
+    <span class="section-title">{{ course?.courseName }}</span>
+    <div fxLayoutAlign="center stretch" class="course-overview">
+      <mat-card class="course-overview-card">
+        <mat-card-header>
+          <mat-card-title>Course Overview</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Description:</strong> {{ course?.description }}</p>
+          <p>
+            <strong>Number of Lectures:</strong> {{ course?.numberOfLectures }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Students Section -->
+    <div fxLayout="column" fxLayoutGap="10px" class="students-section">
+      <div
+        class="new-student"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        fxLayoutGap="10px"
+      >
+        <span class="section-title" fxLayoutAlign="center stretch">
+          Students
+        </span>
+        <span class="add-student-message">
+          You can add a new student to this course by clicking the button below.
+        </span>
+        <button
+          class="add-student-btn"
+          mat-raised-button
+          (click)="openStudentForm()"
+        >
+          Add New Student
+        </button>
+      </div>
+      <span class="section-title" fxLayoutAlign="center stretch">
+        Enrolled Students
+      </span>
+      <ng-container *ngFor="let student of paginatedStudents">
+        <mat-card fxLayoutAlign="space-between center" class="student-card">
+          <div fxLayout="column">
+            <mat-card-title class="student-card-title">
+              {{ student.firstName }} {{ student.lastName }}
+            </mat-card-title>
+            <mat-card-subtitle class="student-card-subtitle">
+              ID: {{ student.studentId }}
+            </mat-card-subtitle>
+          </div>
+          <button
+            mat-icon-button
+            color="warn"
+            class="remove-button"
+            (click)="removeStudent(student.id)"
+            matTooltip="Remove {{ student.firstName }} from the course"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card>
+      </ng-container>
+
+      <mat-paginator
+        [length]="students.length"
+        [pageSize]="10"
+        (page)="paginate($event)"
+      >
+      </mat-paginator>
+    </div>
+  </ng-template>
+</div>

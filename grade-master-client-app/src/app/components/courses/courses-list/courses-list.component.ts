@@ -1,30 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Course } from '../../../models/course.model';
-import { CourseService } from '../../../services/course.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Component, OnInit } from '@angular/core';
 
-@UntilDestroy()
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
   styleUrl: './courses-list.component.scss',
 })
 export class CoursesListComponent implements OnInit {
-  constructor(public courseService: CourseService) {}
-
+  constructor() {}
   ngOnInit(): void {
-    this.getCourses();
-  }
-
-  getCourses() {
-    this.courseService
-      .getCourses()
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (courses) => this.courseService.updateCourses(courses),
-        error: (error) => {
-          throw error;
-        },
-      });
+    throw new Error('Method not implemented.');
   }
 }

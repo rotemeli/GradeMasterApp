@@ -1,7 +1,91 @@
-<div class="container mt-5 mb-5" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="64px">
-    <app-course-form></app-course-form>
-    <div fxLayoutAlign="center center" fxLayoutGap="64px" fxLayoutAlign="start">
-        <app-teachers-list></app-teachers-list>
-        <app-courses-list></app-courses-list>
+<div fxLayout="column" class="courses-container">
+  <!-- Welcome Section -->
+  <div fxLayout="row" fxLayoutAlign="center stretch">
+    <div fxLayout="column" class="welcome-container" fxLayoutGap="32px">
+      <div>
+        <span class="welcome-title" fxLayoutAlign="center stretch">
+          Hello, {{ teacherName }}
+        </span>
+        <span>
+          This is your course management center, where you can easily view and
+          update your current courses.
+        </span>
+      </div>
+      <div>
+        <span fxLayoutAlign="center center" class="click-below-text">
+          Click the button below to add a new course.
+        </span>
+        <div class="dialog-container" fxLayoutAlign="center stretch">
+          <button mat-raised-button (click)="openCourseForm()">
+            Add New Course
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
+  <!-- Courses List -->
+  <div fxLayout="column" fxLayoutGap="20px">
+    <h4>Your Courses</h4>
+    <ng-container *ngIf="courses && courses.length > 0; else noCourses">
+      <div
+        class="courses-grid"
+        fxLayout="row"
+        fxLayoutGap="20px"
+        fxLayoutAlign="start stretch"
+        fxLayoutWrap
+      >
+        <mat-card *ngFor="let course of courses">
+          <mat-card-header>
+            <mat-card-title>{{ course.courseName }}</mat-card-title>
+            <mat-card-subtitle>{{ course.description }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p><strong>Lectures:</strong> {{ course.numberOfLectures }}</p>
+          </mat-card-content>
+          <mat-card-actions fxLayoutGap="10px" fxLayoutAlign="end">
+            <!-- View Details Button -->
+            <button
+              mat-button
+              aria-label="view-details"
+              [disabled]="isDeleting[course.id]"
+              (click)="viewCourseDetails(course.id)"
+            >
+              <mat-icon>visibility</mat-icon>
+              View Details
+            </button>
+            <!-- Edit Button -->
+            <button
+              mat-button
+              aria-label="edit"
+              [disabled]="isDeleting[course.id]"
+              (click)="openCourseForm(course)"
+            >
+              <mat-icon>edit</mat-icon>
+              Edit
+            </button>
+            <!-- Delete Button -->
+            <ng-container *ngIf="!isDeleting[course.id]; else deleting">
+              <button
+                mat-button
+                aria-label="delete"
+                (click)="deleteCourse(course.id)"
+              >
+                <mat-icon>delete</mat-icon>
+                Delete
+              </button>
+            </ng-container>
+            <ng-template #deleting>
+              <button mat-button disabled>
+                <mat-spinner diameter="20"></mat-spinner>
+              </button>
+            </ng-template>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-container>
+
+    <ng-template #noCourses>
+      <span>No courses available. Please add a course to get started.</span>
+    </ng-template>
+  </div>
 </div>

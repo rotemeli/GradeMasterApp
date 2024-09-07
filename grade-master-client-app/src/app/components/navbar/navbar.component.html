@@ -1,9 +1,54 @@
-<div class="main-container">
-    <nav class="nav-bar" fxLayoutAlign="space-between center">
-      <div class="nav-bar-items" fxLayout="row" fxLayoutGap="10px">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Grade Master App</a>
+<div class="main-container" *ngIf="!accountService.loadingUser()">
+  <nav class="nav-bar" fxLayoutAlign="space-between center">
+    <div class="nav-bar-items" fxLayout="row" fxLayoutGap="10px">
+      <a
+        *ngIf="!accountService.currentUser()"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Grade Master App
+      </a>
+      <ng-container *ngIf="accountService.currentUser()">
         <a routerLink="/courses" routerLinkActive="active">Courses</a>
+        <a routerLink="/attendance" routerLinkActive="active">Attendance</a>
+        <a routerLink="/tasks" routerLinkActive="active">Tasks</a>
+        <a routerLink="/grades" routerLinkActive="active">Grades</a>
+        <a routerLink="/statistics" routerLinkActive="active">Statistics</a>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="accountService.currentUser()">
+      <div class="user-dropdown">
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+          <span class="user-email">
+            Welcome,
+            {{
+              accountService.currentUser()?.firstName +
+                ' ' +
+                accountService.currentUser()?.lastName
+            }}
+          </span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #userMenu="matMenu" class="user-menu" xPosition="before">
+          <a routerLink="/settings" class="setting-btn">
+            <button mat-menu-item>
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+            </button>
+          </a>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
       </div>
+    </ng-container>
+    <ng-container *ngIf="!accountService.currentUser()">
       <app-login></app-login>
-    </nav>
-<div>
+    </ng-container>
+  </nav>
+  <div></div>
+</div>

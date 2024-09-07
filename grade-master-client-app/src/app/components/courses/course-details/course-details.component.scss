@@ -1,0 +1,61 @@
+.course-details-container {
+  padding: 20px;
+  max-width: 800px !important;
+  margin: 0 auto;
+  .course-overview {
+    .course-overview-card {
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+  }
+  .section-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  .students-section {
+    margin-top: 20px;
+    .add-student-btn {
+      margin-bottom: 16px;
+    }
+    .student-card {
+      padding: 10px 16px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+      .student-card-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #373d35;
+        .student-card-subtitle {
+          font-size: 14px;
+          color: #5a6057;
+        }
+      }
+      .remove-button {
+        color: #ff5449;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+  .new-student {
+    .add-student-message {
+      font-size: 16px;
+      color: #6c757d;
+      text-align: center;
+    }
+  }
+}
+
+p {
+  margin: 8px 0;
+  color: #4e544b;
+}

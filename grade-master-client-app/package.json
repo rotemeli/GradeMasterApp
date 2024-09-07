@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.1.0",
+    "@angular/cdk": "^18.1.0",
     "@angular/common": "^18.1.0",
     "@angular/compiler": "^18.1.0",
     "@angular/core": "^18.1.0",
@@ -25,9 +26,12 @@
     "@ngneat/until-destroy": "^10.0.0",
     "bootstrap": "^5.3.3",
     "express": "^4.18.2",
+    "file-saver": "^2.0.5",
     "ngx-flexible-layout": "^18.0.1",
+    "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {

@@ -1,10 +1,10 @@
-<form form class="form-frame" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+<form form class="form-frame" [formGroup]="loginForm" (ngSubmit)="login()">
   <input
     type="text"
-    id="username"
-    formControlName="username"
+    id="email"
+    formControlName="email"
     class="form-item"
-    placeholder="Username"
+    placeholder="Email"
     autocomplete="off"
     required
   />
