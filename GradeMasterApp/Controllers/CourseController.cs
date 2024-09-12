@@ -113,6 +113,44 @@ namespace GradeMasterApp.Controllers
                 return NotFound("Course not found.");
             }
 
+            if (courseDto.NumberOfLectures < course.NumberOfLectures)
+            {
+                var enrollments = await _enrollmentRepository.GetEnrollmentsByCourseIdAsync(id);
+                var studentIds = enrollments.Select(e => e.StudentId).ToList();
+
+                List<Student>? students = null;
+                if (studentIds.Any())
+                {
+                    students = await _studentRepository.GetStudentsByIdsAsync(studentIds);
+                }
+
+                int diff = course.NumberOfLectures - courseDto.NumberOfLectures;
+
+                var validLectureNames = Enumerable.Range(1, courseDto.NumberOfLectures)
+                                  .Select(i => $"Lecture{i}")
+                                  .ToList();
+                if (students != null)
+                {
+                    foreach (var student in students)
+                    {
+                        var studentAttendance = student.Attendances.FirstOrDefault(a => a.CourseId == id);
+                        if (studentAttendance != null)
+                        {
+                            var redundantAttendances = studentAttendance.AttendanceDetails
+                                .Where(a => !validLectureNames.Contains(a.LectureName))
+                                .ToList();
+
+                            foreach (var attendance in redundantAttendances)
+                            {
+                                studentAttendance.AttendanceDetails.Remove(attendance);
+                            }
+
+                            await _studentRepository.UpdateStudentAsync(student);
+                        }
+                    }
+                }
+            }
+
             // Update the course fields with the new data
             course.CourseName = courseDto.CourseName;
             course.Description = courseDto.Description;
