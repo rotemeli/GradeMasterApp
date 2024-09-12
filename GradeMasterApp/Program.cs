@@ -5,7 +5,16 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDBSettings"));
+DotNetEnv.Env.Load();
+
+string mongoConnectionString = Environment.GetEnvironmentVariable("MONGO_CONNECTION_STRING") ?? string.Empty;
+string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? string.Empty;
+
+builder.Services.Configure<MongoDBSettings>(options =>
+{
+    options.ConnectionString = mongoConnectionString;
+    options.DatabaseName = databaseName;
+});
 
 builder.Services.AddSingleton<MongoDBService>();
 
