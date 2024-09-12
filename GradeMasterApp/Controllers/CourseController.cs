@@ -81,7 +81,7 @@ namespace GradeMasterApp.Controllers
 
             await _courseRepository.UpdateCourseAsync(course);
 
-            return Ok(new { Message = "Course and enrollments created successfully" });
+            return Ok(new { Message = "Course created successfully" });
         }
 
         // Get a specific course by ID
@@ -135,8 +135,6 @@ namespace GradeMasterApp.Controllers
 
             foreach (var enrollmentId in course.Enrollments)
             {
-                await _enrollmentRepository.DeleteEnrollmentAsync(enrollmentId);
-
                 var enrollment = await _enrollmentRepository.GetEnrollmentByIdAsync(enrollmentId);
                 if (enrollment != null)
                 {
@@ -144,9 +142,13 @@ namespace GradeMasterApp.Controllers
                     if (student != null)
                     {
                         student.Enrollments.Remove(enrollmentId);
+
+                        student.Attendances.RemoveAll(a => a.CourseId == id);
+
                         await _studentRepository.UpdateStudentAsync(student);
                     }
                 }
+                await _enrollmentRepository.DeleteEnrollmentAsync(enrollmentId);
             }
 
             await _courseRepository.DeleteCourseAsync(id);
