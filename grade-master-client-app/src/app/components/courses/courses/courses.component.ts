@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseFormComponent } from '../course-form/course-form.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @UntilDestroy()
 @Component({
@@ -22,7 +23,8 @@ export class CoursesComponent implements OnInit {
     private _courseSvc: CourseService,
     private _accountSvc: AccountService,
     private _dialog: MatDialog,
-    private _router: Router
+    private _router: Router,
+    private _toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -83,11 +85,12 @@ export class CoursesComponent implements OnInit {
       .deleteCourseById(courseId)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res) => {
           this.courses = this.courses.filter(
             (course) => course.id !== courseId
           );
           this.isDeleting[courseId] = false;
+          this._toastr.success(res.message);
         },
         error: (err) => {
           this.isDeleting[courseId] = false;

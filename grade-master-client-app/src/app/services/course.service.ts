@@ -43,7 +43,7 @@ export class CourseService {
     );
   }
 
-  deleteCourseById(courseId: string) {
+  deleteCourseById(courseId: string): Observable<any> {
     return this._http.delete(this.baseUrl + `delete-course/${courseId}`);
   }
 }

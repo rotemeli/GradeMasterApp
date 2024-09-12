@@ -38,6 +38,7 @@ namespace GradeMasterApp.Repositories
             await _studentsCollection.ReplaceOneAsync(filter, student);
         }
 
+        // Get student by list of theirs ids
         public async Task<List<Student>> GetStudentsByIdsAsync(List<string> studentIds)
         {
             var filter = Builders<Student>.Filter.In(s => s.Id, studentIds);
