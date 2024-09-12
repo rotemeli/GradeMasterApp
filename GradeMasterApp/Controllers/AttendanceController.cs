@@ -12,11 +12,13 @@ namespace GradeMasterApp.Controllers
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
+        private readonly EnrollmentRepository _enrollmentRepository;
 
-        public AttendanceController(StudentRepository studentRepository, CourseRepository courseRepository)
+        public AttendanceController(StudentRepository studentRepository, CourseRepository courseRepository, EnrollmentRepository enrollmentRepository)
         {
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
         /// <summary>
@@ -25,77 +27,87 @@ namespace GradeMasterApp.Controllers
         /// <param name="attendanceReport"></param>
         /// <returns></returns>
         [HttpPost("update-attendance")]
-        public async Task<IActionResult> UpdateAttendance([FromBody] List<AttendanceDTO> attendanceReport)
+        public async Task<IActionResult> UpdateAttendance([FromBody] List<List<AttendanceDTO>> attendanceReport)
         {
             if (attendanceReport == null || !attendanceReport.Any())
             {
                 return BadRequest("Invalid attendance data.");
             }
 
-            var courseId = attendanceReport.First().CourseId;
-
+            var courseId = attendanceReport.First().First().CourseId;
             var course = await _courseRepository.GetCourseByIdAsync(courseId);
             if (course == null)
                 return NotFound("Course not found.");
 
+            var enrollments = await _enrollmentRepository.GetEnrollmentsByCourseIdAsync(courseId);
+            var studentIds = enrollments.Select(e => e.StudentId).ToList();
+
+            if (!studentIds.Any())
+            {
+                return NotFound("No students found for this course.");
+            }
+
+            var students = await _studentRepository.GetStudentsByIdsAsync(studentIds);
+
+            var tasks = new List<Task>();
+
             foreach (var attendanceDto in attendanceReport)
             {
-                var student = await _studentRepository.GetStudentByStudentIdAsync(attendanceDto.StudentId);
+                var student = students.FirstOrDefault(s => s.StudentId == attendanceDto.First().StudentId);
                 if (student == null)
                 {
-                    return NotFound($"Student with ID {attendanceDto.StudentId} not found.");
+                    return NotFound($"Student with ID {attendanceDto.First().StudentId} not found.");
                 }
 
-                // Update student's attendance
-                var studentAttendanceRecord = student.Attendances.FirstOrDefault(a => a.CourseId == courseId);
-                if (studentAttendanceRecord == null)
-                {
-                    studentAttendanceRecord = new StudentAttendance { CourseId = courseId };
+                var studentAttendanceRecord = student.Attendances.FirstOrDefault(a => a.CourseId == courseId)
+                                              ?? new StudentAttendance { CourseId = courseId };
+
+                if (!student.Attendances.Contains(studentAttendanceRecord))
                     student.Attendances.Add(studentAttendanceRecord);
-                }
 
-                var studentAttendance = studentAttendanceRecord.AttendanceDetails.FirstOrDefault(a => a.LectureName == attendanceDto.LectureName);
-                if (studentAttendance == null)
+                foreach (var attendance in attendanceDto)
                 {
-                    studentAttendance = new Attendance
+                    var studentAttendance = studentAttendanceRecord.AttendanceDetails.FirstOrDefault(a => a.LectureName == attendance.LectureName);
+                    if (studentAttendance == null)
                     {
-                        LectureName = attendanceDto.LectureName,
-                        Status = attendanceDto.Status
-                    };
-                    studentAttendanceRecord.AttendanceDetails.Add(studentAttendance);
-                }
-                else
-                {
-                    studentAttendance.Status = attendanceDto.Status;
-                }
-
-                await _studentRepository.UpdateStudentAsync(student);
-
-                // Update course's attendance
-                var courseAttendanceRecord = course.AttendanceRecords.FirstOrDefault(a => a.StudentId == attendanceDto.StudentId);
-                if (courseAttendanceRecord == null)
-                {
-                    courseAttendanceRecord = new CourseAttendance { StudentId = attendanceDto.StudentId };
-                    course.AttendanceRecords.Add(courseAttendanceRecord);
-                }
-
-                var courseAttendance = courseAttendanceRecord.AttendanceDetails.FirstOrDefault(a => a.LectureName == attendanceDto.LectureName);
-                if (courseAttendance == null)
-                {
-                    courseAttendance = new Attendance
+                        studentAttendanceRecord.AttendanceDetails.Add(new Attendance
+                        {
+                            LectureName = attendance.LectureName,
+                            Status = attendance.Status
+                        });
+                    }
+                    else
                     {
-                        LectureName = attendanceDto.LectureName,
-                        Status = attendanceDto.Status
-                    };
-                    courseAttendanceRecord.AttendanceDetails.Add(courseAttendance);
-                }
-                else
-                {
-                    courseAttendance.Status = attendanceDto.Status;
+                        studentAttendance.Status = attendance.Status;
+                    }
+
+                    var courseAttendanceRecord = course.AttendanceRecords.FirstOrDefault(a => a.StudentId == attendance.StudentId)
+                        ?? new CourseAttendance { StudentId = attendance.StudentId };
+
+                    if (!course.AttendanceRecords.Contains(courseAttendanceRecord))
+                        course.AttendanceRecords.Add(courseAttendanceRecord);
+
+                    var courseAttendance = courseAttendanceRecord.AttendanceDetails.FirstOrDefault(a => a.LectureName == attendance.LectureName);
+                    if (courseAttendance == null)
+                    {
+                        courseAttendanceRecord.AttendanceDetails.Add(new Attendance
+                        {
+                            LectureName = attendance.LectureName,
+                            Status = attendance.Status
+                        });
+                    }
+                    else
+                    {
+                        courseAttendance.Status = attendance.Status;
+                    }
                 }
 
-                await _courseRepository.UpdateCourseAsync(course);
+                tasks.Add(_studentRepository.UpdateStudentAsync(student));
             }
+
+            await Task.WhenAll(tasks);
+
+            await _courseRepository.UpdateCourseAsync(course);
 
             return Ok(new { Message = "Attendance updated successfully" });
         }
