@@ -1,7 +1,10 @@
-.table-container {
-  max-height: 60vh;
-  max-width: 100%;
-  overflow-x: auto;
+.table-submit-btn-container {
+  padding: 0px 16px;
+  .table-container {
+    max-height: 60vh;
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 
 .mat-mdc-header-cell,
