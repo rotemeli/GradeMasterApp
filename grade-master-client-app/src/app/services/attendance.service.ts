@@ -11,7 +11,7 @@ export class AttendanceService {
 
   constructor(private _http: HttpClient) {}
 
-  updateAttendance(attendanceData: IAttendanceData[]): Observable<any> {
+  updateAttendance(attendanceData: IAttendanceData[][]): Observable<any> {
     return this._http.post(this.baseUrl + 'update-attendance', attendanceData);
   }
 }

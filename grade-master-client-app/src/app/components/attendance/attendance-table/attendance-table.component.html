@@ -1,51 +1,50 @@
-<div *ngIf="!isLoading">
-  <section class="table-container mat-elevation-z8" tabindex="0">
-    <table mat-table *ngIf="dataSource.length" [dataSource]="dataSource">
-      <!-- Id Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-      </ng-container>
+<section class="table-container mat-elevation-z8" tabindex="0">
+  <table mat-table *ngIf="dataSource.length" [dataSource]="dataSource">
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-      </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
 
-      <!-- Lecture Columns -->
-      <ng-container *ngFor="let lecture of lectures" [matColumnDef]="lecture">
-        <th mat-header-cell *matHeaderCellDef>{{ lecture }}</th>
-        <td mat-cell *matCellDef="let element">
-          <mat-form-field class="attendance-selection">
-            <mat-select [(ngModel)]="element?.attendance[lecture]">
-              <mat-option [value]="-1">Select</mat-option>
-              <mat-option
-                *ngFor="let option of attendanceOptions"
-                [value]="option.value"
-              >
-                {{ option.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </td>
-      </ng-container>
+    <!-- Lecture Columns -->
+    <ng-container *ngFor="let lecture of lectures" [matColumnDef]="lecture">
+      <th mat-header-cell *matHeaderCellDef>{{ lecture }}</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field class="attendance-selection">
+          <mat-select [(ngModel)]="element?.attendance[lecture]">
+            <mat-option [value]="-1">Select</mat-option>
+            <mat-option
+              *ngFor="let option of attendanceOptions"
+              [value]="option.value"
+            >
+              {{ option.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </section>
-  <div class="submit-container" fxLayoutAlign="end">
-    <button mat-raised-button (click)="onSubmit()">Submit Attendance</button>
-  </div>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</section>
+<div *ngIf="!isLoading" class="submit-container" fxLayoutAlign="end">
+  <button mat-raised-button (click)="onSubmit()">Submit Attendance</button>
 </div>
+
 <div
   *ngIf="isLoading"
   class="loading-screen"
   fxLayout="column"
   fxLayoutAlign="center center"
 >
-  <div class="loading-content" fxLayoutAlign="center center">
+  <div class="loading-content" fxLayoutAlign="center center" fxLayoutGap="16px">
     <mat-spinner></mat-spinner>
     <div class="loading-text">Loading, please wait...</div>
   </div>

@@ -10,6 +10,7 @@ import {
   IAttendanceData,
   StudentAttendance,
 } from '../../../models/attendance.model';
+import { ToastrService } from 'ngx-toastr';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +34,8 @@ export class AttendanceTableComponent implements OnChanges {
 
   constructor(
     private _studentSvc: StudentService,
-    private _attendanceSvc: AttendanceService
+    private _attendanceSvc: AttendanceService,
+    private _toastr: ToastrService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -109,8 +111,8 @@ export class AttendanceTableComponent implements OnChanges {
   onSubmit() {
     if (!this.course) return;
 
-    const attendanceData: IAttendanceData[] = this.dataSource
-      .map((student) => {
+    const attendanceData: IAttendanceData[][] = this.dataSource.map(
+      (student) => {
         return Object.keys(student.attendance).map((lecture) => {
           const lectureAttendance: EAttendanceStatus =
             student.attendance[lecture];
@@ -138,19 +140,21 @@ export class AttendanceTableComponent implements OnChanges {
             status: status,
           };
         });
-      })
-      .flat();
+      }
+    );
 
     this.isLoading = true;
-
     this._attendanceSvc
       .updateAttendance(attendanceData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => (this.isLoading = false),
+        next: (res) => {
+          this.isLoading = false;
+          this._toastr.success(res.message);
+        },
         error: (err) => {
           this.isLoading = false;
-          throw err;
+          console.log(err);
         },
       });
   }
