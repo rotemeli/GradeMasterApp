@@ -103,7 +103,7 @@ export class AttendanceTableComponent implements OnChanges {
         },
         error: (err) => {
           this.isLoading = false;
-          throw err;
+          console.log(err);
         },
       });
   }
