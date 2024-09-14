@@ -8,6 +8,7 @@ import { authReverseGuard } from './guards/auth-reverse.guard';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CourseDetailsComponent } from './components/courses/course-details/course-details.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
     children: [
       { path: 'courses', component: CoursesComponent },
       { path: 'attendance', component: AttendanceComponent },
+      { path: 'tasks', component: TasksComponent },
       { path: 'courses/:id/details', component: CourseDetailsComponent },
     ],
   },

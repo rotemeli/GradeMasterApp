@@ -1,0 +1,21 @@
+<mat-form-field *ngIf="!isLoading" appearance="fill">
+  <mat-label>Select Course</mat-label>
+  <mat-select
+    [(value)]="selectedCourse"
+    (selectionChange)="onCourseChange($event.value)"
+  >
+    <mat-option *ngFor="let course of courses" [value]="course">
+      {{ course.courseName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div
+  *ngIf="isLoading"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  class="loading-container"
+>
+  <mat-spinner></mat-spinner>
+  <span class="loading-courses">Loading courses...</span>
+</div>

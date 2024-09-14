@@ -40,6 +40,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CourseDetailsComponent } from './components/courses/course-details/course-details.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudentFormComponent } from './components/student-form/student-form.component';
+import { CourseSelectComponent } from './components/courses/course-select/course-select.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { StudentFormComponent } from './components/student-form/student-form.com
     PageNotFoundComponent,
     CourseDetailsComponent,
     StudentFormComponent,
+    CourseSelectComponent,
+    TasksComponent,
   ],
   imports: [
     BrowserModule,

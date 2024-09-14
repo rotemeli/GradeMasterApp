@@ -1,28 +1,24 @@
-<div fxLayout="column">
-  <div fxLayoutAlign="center center">
-    <mat-form-field class="select-course">
-      <mat-label>Select Course</mat-label>
-      <mat-select [(ngModel)]="selectedCourse">
-        <mat-option *ngFor="let course of courses" [value]="course">
-          {{ course.courseName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <h5>Students Attendance Report</h5>
-  <div fxLayout="column" fxLayoutGap="10px">
-    <div
-      *ngIf="isLoading; else loadedContent"
-      class="loading-container"
-      fxLayout="column"
-      fxLayoutAlign="center center"
+<div fxLayout="column" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <mat-icon class="course-icon" matTooltip="Select a course">school</mat-icon>
+    <app-course-select
+      (courseSelected)="onCourseSelected($event)"
+      (coursesLoaded)="onCoursesLoaded($event)"
     >
-      <mat-spinner></mat-spinner>
-      <span class="loading-courses">Loading courses...</span>
-    </div>
-    <ng-template #loadedContent>
+    </app-course-select>
+    <button
+      mat-raised-button
+      class="clear-button"
+      (click)="selectedCourse = undefined"
+    >
+      Clear
+    </button>
+  </div>
+  <h5 fxLayoutAlign="center center">Students Attendance Report</h5>
+  <div fxLayout="column" fxLayoutGap="10px">
+    <div *ngIf="!isLoading">
       <div *ngIf="courses.length; else noCoursesTemplate">
-        <h5 *ngIf="!selectedCourse">
+        <h5 *ngIf="!selectedCourse" fxLayoutAlign="center center">
           * Select a course to view the attendance report
         </h5>
       </div>
@@ -33,7 +29,7 @@
           page to create a new course.
         </h5>
       </ng-template>
-    </ng-template>
+    </div>
     <app-attendance-table
       *ngIf="selectedCourse"
       class="attendance-table"

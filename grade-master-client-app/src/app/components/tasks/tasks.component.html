@@ -1,0 +1,26 @@
+<div fxLayout="column" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <mat-icon class="course-icon" matTooltip="Select a course">school</mat-icon>
+    <app-course-select
+      (coursesLoaded)="onCoursesLoaded($event)"
+      (courseSelected)="onCourseSelected($event)"
+    >
+    </app-course-select>
+    <button
+      mat-raised-button
+      class="clear-button"
+      (click)="selectedCourse = undefined"
+    >
+      Clear
+    </button>
+  </div>
+  <h5 fxLayoutAlign="center center">Course Task Management</h5>
+  <div *ngIf="!selectedCourse" fxLayout="column" fxLayoutAlign="center center">
+    <h5>* Select a course to view and manage tasks</h5>
+  </div>
+  <div *ngIf="!isLoading">
+    <div *ngIf="selectedCourse">
+      <h5>Manage tasks for {{ selectedCourse.courseName }}</h5>
+    </div>
+  </div>
+</div>

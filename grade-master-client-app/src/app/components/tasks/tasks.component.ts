@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Course } from '../../models/course.model';
 
 @Component({
-  selector: 'app-attendance',
-  templateUrl: './attendance.component.html',
-  styleUrl: './attendance.component.scss',
+  selector: 'app-tasks',
+  templateUrl: './tasks.component.html',
+  styleUrl: './tasks.component.scss',
 })
-export class AttendanceComponent {
+export class TasksComponent {
   courses: Course[] = [];
   selectedCourse: Course | undefined;
   isLoading: boolean = true;
