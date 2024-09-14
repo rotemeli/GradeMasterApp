@@ -6,9 +6,12 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { StudentService } from '../../../services/student.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { IAssignmentData } from '../../../models/assignment.model';
+import { AssignmentService } from '../../../services/assignment.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-assignment-form',
   templateUrl: './assignment-form.component.html',
@@ -20,7 +23,7 @@ export class AssignmentFormComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(
-    private _studentSvc: StudentService,
+    private _assignmentSvc: AssignmentService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AssignmentFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -65,7 +68,32 @@ export class AssignmentFormComponent implements OnInit {
     };
   }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    this.formSubmitted = true;
+    this.isLoading = true;
+    const newAssignmentData: IAssignmentData = {
+      courseId: this.data.courseId,
+      assignment: {
+        title: this.assignmentForm.get('title')?.value,
+        description: this.assignmentForm.get('description')?.value,
+        dueDate: this.assignmentForm.get('dueDate')?.value,
+      },
+    };
+
+    this._assignmentSvc
+      .addNewAssignment(newAssignmentData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (assignment) => {
+          this.isLoading = false;
+          this.dialogRef.close(assignment);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error(err);
+        },
+      });
+  }
 
   onCancel(): void {
     this.dialogRef.close(null);

@@ -27,9 +27,10 @@ const routes: Routes = [
     canActivateChild: [authGuard],
     children: [
       { path: 'courses', component: CoursesComponent },
+      { path: 'courses/:id/details', component: CourseDetailsComponent },
       { path: 'attendance', component: AttendanceComponent },
       { path: 'tasks', component: TasksComponent },
-      { path: 'courses/:id/details', component: CourseDetailsComponent },
+      { path: 'tasks/:id/details', component: TasksComponent },
     ],
   },
   { path: '**', component: PageNotFoundComponent },
