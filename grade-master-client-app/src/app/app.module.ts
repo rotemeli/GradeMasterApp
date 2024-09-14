@@ -25,6 +25,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrModule } from 'ngx-toastr';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { AttendanceComponent } from './components/attendance/attendance.component';
@@ -42,6 +44,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudentFormComponent } from './components/student-form/student-form.component';
 import { CourseSelectComponent } from './components/courses/course-select/course-select.component';
 import { TasksComponent } from './components/tasks/tasks.component';
+import { AssignmentFormComponent } from './components/tasks/assignment-form/assignment-form.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +64,7 @@ import { TasksComponent } from './components/tasks/tasks.component';
     StudentFormComponent,
     CourseSelectComponent,
     TasksComponent,
+    AssignmentFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +82,7 @@ import { TasksComponent } from './components/tasks/tasks.component';
     MatInputModule,
     MatButtonModule,
     MatMenuModule,
+    MatDatepickerModule,
     MatDividerModule,
     MatTableModule,
     MatSelectModule,
@@ -95,6 +100,7 @@ import { TasksComponent } from './components/tasks/tasks.component';
     provideClientHydration(),
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
+    provideNativeDateAdapter(),
   ],
   bootstrap: [AppComponent],
 })

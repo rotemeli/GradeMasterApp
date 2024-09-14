@@ -3,6 +3,7 @@ import { Course } from '../../../models/course.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AccountService } from '../../../services/account.service';
 import { CourseService } from '../../../services/course.service';
+import { FormControl } from '@angular/forms';
 
 @UntilDestroy()
 @Component({
@@ -11,6 +12,7 @@ import { CourseService } from '../../../services/course.service';
   styleUrl: './course-select.component.scss',
 })
 export class CourseSelectComponent {
+  courseControl = new FormControl();
   courses: Course[] = [];
   selectedCourse: Course | undefined;
   isLoading: boolean = true;
@@ -25,6 +27,12 @@ export class CourseSelectComponent {
 
   ngOnInit(): void {
     this.loadCourses();
+
+    this.courseControl.valueChanges
+      .pipe(untilDestroyed(this))
+      .subscribe((course: Course | undefined) => {
+        if (course) this.onCourseChange(course);
+      });
   }
 
   loadCourses() {
@@ -54,5 +62,11 @@ export class CourseSelectComponent {
   onCourseChange(course: Course) {
     this.selectedCourse = course;
     this.courseSelected.emit(this.selectedCourse);
+  }
+
+  clearSelection() {
+    this.selectedCourse = undefined;
+    this.courseControl.reset();
+    this.courseSelected.emit(undefined);
   }
 }

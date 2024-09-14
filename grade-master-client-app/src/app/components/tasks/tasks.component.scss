@@ -1,3 +1,27 @@
-.clear-button, .course-icon {
-    margin-bottom: 12px;
+.main-container {
+  padding: 16px;
+}
+.clear-button,
+.course-icon {
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c322a;
+}
+
+.new-item {
+  .add-item-message {
+    font-size: 16px;
+    color: #6c757d;
+    text-align: center;
+  }
+}
+
+.add-item-btn {
+  margin-bottom: 16px;
 }

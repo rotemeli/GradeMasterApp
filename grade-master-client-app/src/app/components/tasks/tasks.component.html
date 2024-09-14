@@ -1,26 +1,73 @@
-<div fxLayout="column" fxLayoutGap="20px">
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <mat-icon class="course-icon" matTooltip="Select a course">school</mat-icon>
-    <app-course-select
-      (coursesLoaded)="onCoursesLoaded($event)"
-      (courseSelected)="onCourseSelected($event)"
-    >
-    </app-course-select>
-    <button
-      mat-raised-button
-      class="clear-button"
-      (click)="selectedCourse = undefined"
-    >
-      Clear
-    </button>
-  </div>
-  <h5 fxLayoutAlign="center center">Course Task Management</h5>
-  <div *ngIf="!selectedCourse" fxLayout="column" fxLayoutAlign="center center">
+<div class="main-container" fxLayout="column" fxLayoutGap="16px">
+  <app-course-select
+    (coursesLoaded)="onCoursesLoaded($event)"
+    (courseSelected)="onCourseSelected($event)"
+  >
+  </app-course-select>
+  <h5 fxLayoutAlign="center center">Course Tasks Management</h5>
+  <div
+    *ngIf="!isLoading && !selectedCourse"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
     <h5>* Select a course to view and manage tasks</h5>
   </div>
-  <div *ngIf="!isLoading">
-    <div *ngIf="selectedCourse">
-      <h5>Manage tasks for {{ selectedCourse.courseName }}</h5>
+  <div
+    *ngIf="!isLoading && selectedCourse"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxLayoutGap="20px"
+  >
+    <h5>Manage tasks for {{ selectedCourse.courseName }}</h5>
+
+    <div fxLayout="column" fxLayoutGap="32px">
+      <!-- Assignments Section -->
+      <div fxLayoutGap="10px" class="assignments-section">
+        <div
+          class="new-item"
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          fxLayoutGap="10px"
+        >
+          <span class="section-title" fxLayoutAlign="center stretch">
+            Assignments
+          </span>
+          <span class="add-item-message">
+            Add a new assignment to this course by clicking the button below.
+          </span>
+          <button
+            class="add-item-btn"
+            mat-raised-button
+            (click)="openAssignmentForm()"
+          >
+            Add New Assignment
+          </button>
+        </div>
+      </div>
+
+      <!-- Exams Section -->
+      <div fxLayoutGap="10px" class="exams-section">
+        <div
+          class="new-item"
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          fxLayoutGap="10px"
+        >
+          <span class="section-title" fxLayoutAlign="center stretch"
+            >Exams</span
+          >
+          <span class="add-item-message">
+            Add a new exam to this course by clicking the button below.
+          </span>
+          <button
+            class="add-item-btn"
+            mat-raised-button
+            (click)="openExamForm()"
+          >
+            Add New Exam
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

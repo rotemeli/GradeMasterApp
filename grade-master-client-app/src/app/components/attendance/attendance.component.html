@@ -1,19 +1,9 @@
-<div fxLayout="column" fxLayoutGap="20px">
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <mat-icon class="course-icon" matTooltip="Select a course">school</mat-icon>
-    <app-course-select
-      (courseSelected)="onCourseSelected($event)"
-      (coursesLoaded)="onCoursesLoaded($event)"
-    >
-    </app-course-select>
-    <button
-      mat-raised-button
-      class="clear-button"
-      (click)="selectedCourse = undefined"
-    >
-      Clear
-    </button>
-  </div>
+<div fxLayout="column" fxLayoutGap="4px">
+  <app-course-select
+    (courseSelected)="onCourseSelected($event)"
+    (coursesLoaded)="onCoursesLoaded($event)"
+  >
+  </app-course-select>
   <h5 fxLayoutAlign="center center">Students Attendance Report</h5>
   <div fxLayout="column" fxLayoutGap="10px">
     <div *ngIf="!isLoading">
