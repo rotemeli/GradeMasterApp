@@ -49,5 +49,43 @@ namespace GradeMasterApp.Controllers
 
             return Ok(assignment);
         }
+
+        // Get all assignments for a specific course
+        [HttpGet("get-course-assignments/{courseId}")]
+        public async Task<IActionResult> GetCourseAssignments([FromRoute] string courseId)
+        {
+            var assignments = await _assignmentRepository.GetAssignmentsByCourseIdAsync(courseId);
+            if (assignments == null || !assignments.Any())
+            {
+                return NotFound("No assignments found for this course.");
+            }
+
+            return Ok(assignments);
+        }
+
+        // Update a assignment by id
+        [HttpPut("update-assignment/{id}")]
+        public async Task<IActionResult> UpdateAssignment([FromRoute] string id, [FromBody] AddAssignmentToCourseDTO assignmentDto)
+        {
+            if (assignmentDto == null || string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Invalid assignment data.");
+            }
+
+            // Find the assignment by ID
+            var assignment = await _assignmentRepository.GetAssignmentByIdAsync(id);
+            if (assignment == null)
+            {
+                return NotFound("Assignment not found.");
+            }
+
+            assignment.Title = assignmentDto.Assignment.Title;
+            assignment.Description = assignmentDto.Assignment.Description;
+            assignment.DueDate = assignmentDto.Assignment.DueDate;
+
+            await _assignmentRepository.UpdateAssignmentAsync(assignment);
+
+            return Ok(assignment);
+        }
     }
 }

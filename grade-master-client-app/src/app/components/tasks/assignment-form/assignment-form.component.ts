@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IAssignmentData } from '../../../models/assignment.model';
+import { Assignment, IAssignmentData } from '../../../models/assignment.model';
 import { AssignmentService } from '../../../services/assignment.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -21,6 +21,7 @@ export class AssignmentFormComponent implements OnInit {
   assignmentForm!: FormGroup;
   formSubmitted: boolean = false;
   isLoading: boolean = false;
+  isEditMode: boolean = false;
 
   constructor(
     private _assignmentSvc: AssignmentService,
@@ -51,6 +52,18 @@ export class AssignmentFormComponent implements OnInit {
       ],
       dueDate: ['', [Validators.required]],
     });
+
+    // For Edit Mode
+    if (this.data && this.data.assignment) {
+      this.isEditMode = true;
+      const assignment: Assignment = this.data.assignment;
+      const assignmentData = {
+        title: assignment.title,
+        description: assignment.description,
+        dueDate: assignment.dueDate,
+      };
+      this.assignmentForm.patchValue(assignmentData);
+    }
   }
 
   noSpecialCharsValidator(): ValidatorFn {
@@ -71,7 +84,7 @@ export class AssignmentFormComponent implements OnInit {
   onSubmit(): void {
     this.formSubmitted = true;
     this.isLoading = true;
-    const newAssignmentData: IAssignmentData = {
+    const assignmentData: IAssignmentData = {
       courseId: this.data.courseId,
       assignment: {
         title: this.assignmentForm.get('title')?.value,
@@ -79,20 +92,35 @@ export class AssignmentFormComponent implements OnInit {
         dueDate: this.assignmentForm.get('dueDate')?.value,
       },
     };
-
-    this._assignmentSvc
-      .addNewAssignment(newAssignmentData)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (assignment) => {
-          this.isLoading = false;
-          this.dialogRef.close(assignment);
-        },
-        error: (err) => {
-          this.isLoading = false;
-          console.error(err);
-        },
-      });
+    if (this.isEditMode) {
+      this._assignmentSvc
+        .updateAssignment(this.data.assignment.id, assignmentData)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (result) => {
+            this.isLoading = false;
+            this.dialogRef.close(result);
+          },
+          error: (err) => {
+            this.isLoading = false;
+            console.error(err);
+          },
+        });
+    } else {
+      this._assignmentSvc
+        .addNewAssignment(assignmentData)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (assignment) => {
+            this.isLoading = false;
+            this.dialogRef.close(assignment);
+          },
+          error: (err) => {
+            this.isLoading = false;
+            console.error(err);
+          },
+        });
+    }
   }
 
   onCancel(): void {

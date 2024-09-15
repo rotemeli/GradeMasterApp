@@ -1,9 +1,16 @@
 .main-container {
   padding: 16px;
 }
-.clear-button,
-.course-icon {
-  margin-bottom: 12px;
+
+.new-assignment {
+  .add-assignment-message {
+    font-size: 16px;
+    color: #6c757d;
+    text-align: center;
+  }
+  .add-assignment-btn {
+    margin-bottom: 16px;
+  }
 }
 
 .section-title {
@@ -12,16 +19,4 @@
   text-align: center;
   margin-bottom: 20px;
   color: #2c322a;
-}
-
-.new-item {
-  .add-item-message {
-    font-size: 16px;
-    color: #6c757d;
-    text-align: center;
-  }
-}
-
-.add-item-btn {
-  margin-bottom: 16px;
 }

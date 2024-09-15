@@ -4,7 +4,9 @@
   fxLayoutAlign="center center"
   fxLayoutGap="18px"
 >
-  <mat-card-title>Add New Assignment</mat-card-title>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit Assignment' : 'Add New Assignment' }}
+  </mat-card-title>
   <mat-card-content class="full-width">
     <form
       [formGroup]="assignmentForm"

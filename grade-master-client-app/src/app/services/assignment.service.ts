@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IAssignmentData } from '../models/assignment.model';
+import { Assignment, IAssignmentData } from '../models/assignment.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,19 @@ export class AssignmentService {
     return this._http.post(
       this.baseUrl + 'add-new-assignment',
       newAssignmentData
+    );
+  }
+
+  getAssignmentsByCourseId(courseId: string) {
+    return this._http.get<Assignment[]>(
+      this.baseUrl + `get-course-assignments/${courseId}`
+    );
+  }
+
+  updateAssignment(assignmentId: string, assignmentData: IAssignmentData) {
+    return this._http.put(
+      this.baseUrl + `update-assignment/${assignmentId}`,
+      assignmentData
     );
   }
 }

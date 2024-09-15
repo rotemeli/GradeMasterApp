@@ -45,6 +45,7 @@ import { StudentFormComponent } from './components/student-form/student-form.com
 import { CourseSelectComponent } from './components/courses/course-select/course-select.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { AssignmentFormComponent } from './components/tasks/assignment-form/assignment-form.component';
+import { AssignmentsListComponent } from './components/tasks/assignments-list/assignments-list.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AssignmentFormComponent } from './components/tasks/assignment-form/assi
     CourseSelectComponent,
     TasksComponent,
     AssignmentFormComponent,
+    AssignmentsListComponent,
   ],
   imports: [
     BrowserModule,

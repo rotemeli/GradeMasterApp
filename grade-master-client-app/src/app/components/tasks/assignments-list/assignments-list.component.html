@@ -1,0 +1,37 @@
+<div fxLayout="row" fxLayoutWrap fxLayoutGap="20px" class="card-container">
+  <mat-card *ngFor="let assignment of assignments" class="assignment-card">
+    <mat-card-header>
+      <mat-card-title>{{ assignment.title }}</mat-card-title>
+      <mat-card-subtitle>
+        Due: {{ assignment.dueDate | date : 'shortDate' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p>{{ assignment.description }}</p>
+    </mat-card-content>
+
+    <mat-card-actions class="card-actions">
+      <button
+        mat-raised-button
+        aria-label="update-grades"
+        (click)="updateGrades(assignment.id)"
+      >
+        <mat-icon>grading</mat-icon>
+        Update Grades
+      </button>
+      <button
+        mat-button
+        aria-label="edit"
+        (click)="onEditAssignment(assignment)"
+      >
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+      <button mat-button aria-label="delete">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
