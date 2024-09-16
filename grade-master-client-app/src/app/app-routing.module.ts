@@ -9,6 +9,7 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CourseDetailsComponent } from './components/courses/course-details/course-details.component';
 import { TasksComponent } from './components/tasks/tasks.component';
+import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
 
 const routes: Routes = [
   {
@@ -30,7 +31,10 @@ const routes: Routes = [
       { path: 'courses/:id/details', component: CourseDetailsComponent },
       { path: 'attendance', component: AttendanceComponent },
       { path: 'tasks', component: TasksComponent },
-      { path: 'tasks/:id/details', component: TasksComponent },
+      {
+        path: 'tasks/:taskId/:courseId/grades',
+        component: UpdateGradesComponent,
+      },
     ],
   },
   { path: '**', component: PageNotFoundComponent },

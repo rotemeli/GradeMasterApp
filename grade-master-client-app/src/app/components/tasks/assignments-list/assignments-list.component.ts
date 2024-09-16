@@ -12,6 +12,7 @@ export class AssignmentsListComponent {
   @Output() editAssignment: EventEmitter<Assignment> =
     new EventEmitter<Assignment>();
   @Output() deleteAssignment: EventEmitter<string> = new EventEmitter<string>();
+  @Output() updateGrades: EventEmitter<string> = new EventEmitter<string>();
 
   onEditAssignment(assignment: Assignment) {
     this.editAssignment.emit(assignment);
@@ -21,5 +22,7 @@ export class AssignmentsListComponent {
     this.deleteAssignment.emit(assignmentId);
   }
 
-  updateGrades(id: string) {}
+  onUpdateGrades(assignmentId: string) {
+    this.updateGrades.emit(assignmentId);
+  }
 }

@@ -16,3 +16,10 @@ export interface IStudentData {
     studentId: number;
   };
 }
+
+export interface ITaskStudentData {
+  firstName: string;
+  lastName: string;
+  studentId: number;
+  assignmentsSubmission: any;
+}

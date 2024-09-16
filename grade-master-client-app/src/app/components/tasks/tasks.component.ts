@@ -3,10 +3,10 @@ import { Course } from '../../models/course.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AssignmentFormComponent } from './assignment-form/assignment-form.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AccountService } from '../../services/account.service';
 import { AssignmentService } from '../../services/assignment.service';
 import { Assignment } from '../../models/assignment.model';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -23,8 +23,8 @@ export class TasksComponent implements OnInit {
 
   constructor(
     private _assignmentSvc: AssignmentService,
-    private _accountSvc: AccountService,
     private _dialog: MatDialog,
+    private _router: Router,
     private _toastr: ToastrService
   ) {}
 
@@ -99,6 +99,15 @@ export class TasksComponent implements OnInit {
           console.error('Failed to delete assignment:', err);
         },
       });
+  }
+
+  onUpdateGrades(taskId: string) {
+    this._router.navigate([
+      '/tasks',
+      taskId,
+      this.selectedCourse?.id,
+      'grades',
+    ]);
   }
 
   openExamForm() {}

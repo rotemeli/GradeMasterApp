@@ -1,0 +1,80 @@
+<form
+  (ngSubmit)="onSubmit()"
+  fxLayout="column"
+  fxLayoutGap="20px"
+  class="grades-form"
+>
+  <div
+    *ngIf="isLoading"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    class="spinner-container"
+  >
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+  <div *ngIf="!isLoading">
+    <div
+      *ngFor="let student of students; let i = index"
+      class="student-card-wrapper"
+      fxLayoutAlign="center"
+    >
+      <mat-card fxLayout="column" fxLayoutGap="16px" class="student-card">
+        <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-card-title>
+            <div fxLayout="row" fxLayoutGap="8px">
+              <mat-icon>person</mat-icon>
+              <span>{{ student.firstName }} {{ student.lastName }}</span>
+            </div>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <div fxLayout="row" fxLayoutGap="8px">
+              <mat-icon>badge</mat-icon>
+              <span>Student ID: {{ student.studentId }}</span>
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
+            <mat-form-field
+              appearance="outline"
+              fxFlex="25%"
+              class="grade-input"
+            >
+              <mat-label>Grade</mat-label>
+              <mat-icon matPrefix>grade</mat-icon>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="student.assignmentsSubmission.grade"
+                name="grade{{ i }}"
+                placeholder="0-100"
+                min="0"
+                max="100"
+              />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" fxFlex class="feedback-input">
+            <mat-label>Feedback</mat-label>
+            <mat-icon matPrefix>feedback</mat-icon>
+            <textarea
+              matInput
+              [(ngModel)]="student.assignmentsSubmission.feedback"
+              name="feedback{{ i }}"
+              placeholder="Enter feedback"
+              rows="4"
+            ></textarea>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="submit-button-sticky">
+      <button mat-fab extended type="submit">
+        <mat-icon>grading</mat-icon>
+        Submit Grades
+      </button>
+    </div>
+  </div>
+</form>

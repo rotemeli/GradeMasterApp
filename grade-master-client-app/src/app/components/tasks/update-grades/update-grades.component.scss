@@ -1,0 +1,33 @@
+.grades-form {
+  padding: 16px;
+  .spinner-container {
+    height: 100vh;
+  }
+  .student-card-wrapper {
+    width: 100%;
+    margin-bottom: 24px;
+    .student-card {
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      border-radius: 12px;
+      background-color: #f9fbfc;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .feedback-input textarea {
+      resize: vertical;
+    }
+  }
+  .submit-button-sticky {
+    position: sticky;
+    bottom: 0;
+    padding: 16px;
+    text-align: right;
+    z-index: 10;
+  }
+}
+
+mat-icon {
+  color: #22892f;
+}
