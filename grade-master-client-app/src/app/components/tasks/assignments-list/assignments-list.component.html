@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>{{ assignment.title }}</mat-card-title>
       <mat-card-subtitle>
-        Due: {{ assignment.dueDate | date : 'shortDate' }}
+        Due: {{ assignment.dueDate | date : 'mediumDate' }}
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -28,10 +28,21 @@
         <mat-icon>edit</mat-icon>
         Edit
       </button>
-      <button mat-button aria-label="delete">
-        <mat-icon>delete</mat-icon>
-        Delete
-      </button>
+      <ng-container *ngIf="!isDeleting[assignment.id]; else deleting">
+        <button
+          mat-button
+          aria-label="delete"
+          (click)="onDeleteAssignment(assignment.id)"
+        >
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </ng-container>
+      <ng-template #deleting>
+        <button mat-button disabled>
+          <mat-spinner diameter="20"></mat-spinner>
+        </button>
+      </ng-template>
     </mat-card-actions>
   </mat-card>
 </div>

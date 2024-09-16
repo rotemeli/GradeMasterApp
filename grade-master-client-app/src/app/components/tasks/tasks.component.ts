@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AccountService } from '../../services/account.service';
 import { AssignmentService } from '../../services/assignment.service';
 import { Assignment } from '../../models/assignment.model';
+import { ToastrService } from 'ngx-toastr';
 
 @UntilDestroy()
 @Component({
@@ -18,11 +19,13 @@ export class TasksComponent implements OnInit {
   assignments: Assignment[] = [];
   selectedCourse: Course | undefined;
   isLoading: boolean = true;
+  isDeleting: { [key: string]: boolean } = {};
 
   constructor(
     private _assignmentSvc: AssignmentService,
     private _accountSvc: AccountService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _toastr: ToastrService
   ) {}
 
   ngOnInit(): void {}
@@ -64,7 +67,8 @@ export class TasksComponent implements OnInit {
   }
 
   fetchAssignments() {
-    if (!this._accountSvc.teacherId || !this.selectedCourse?.id) return;
+    if (!this.selectedCourse?.id) return;
+    this.assignments = [];
     this._assignmentSvc
       .getAssignmentsByCourseId(this.selectedCourse.id)
       .pipe(untilDestroyed(this))
@@ -73,6 +77,27 @@ export class TasksComponent implements OnInit {
           this.assignments = assignments;
         },
         error: (err) => console.log(err),
+      });
+  }
+
+  onDeleteAssignment(assignmentId: string) {
+    if (!this.selectedCourse?.id) return;
+    this.isDeleting[assignmentId] = true;
+    this._assignmentSvc
+      .deleteAssignmentById(assignmentId, this.selectedCourse.id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res) => {
+          this.assignments = this.assignments.filter(
+            (assignment) => assignment.id !== assignmentId
+          );
+          this.isDeleting[assignmentId] = false;
+          this._toastr.success(res.message);
+        },
+        error: (err) => {
+          this.isDeleting[assignmentId] = false;
+          console.error('Failed to delete assignment:', err);
+        },
       });
   }
 

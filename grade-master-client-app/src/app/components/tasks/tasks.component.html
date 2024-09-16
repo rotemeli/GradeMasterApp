@@ -46,7 +46,9 @@
         </div>
         <app-assignments-list
           [assignments]="this.assignments"
+          [isDeleting]="isDeleting"
           (editAssignment)="openAssignmentForm($event)"
+          (deleteAssignment)="onDeleteAssignment($event)"
         ></app-assignments-list>
       </div>
 

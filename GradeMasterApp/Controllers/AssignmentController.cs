@@ -87,5 +87,30 @@ namespace GradeMasterApp.Controllers
 
             return Ok(assignment);
         }
+
+        // Delete an assignment by id
+        [HttpDelete("delete-assignment/{assignmentId}/{courseId}")]
+        public async Task<IActionResult> DeleteAssignment([FromRoute] string assignmentId, [FromRoute] string courseId)
+        {
+            // Find the assignment by ID
+            var assignment = await _assignmentRepository.GetAssignmentByIdAsync(assignmentId);
+            if (assignment == null)
+            {
+                return NotFound("Assignment not found.");
+            }
+
+            var course = await _courseRepository.GetCourseByIdAsync(courseId);
+            if (course == null)
+            {
+                return NotFound("Course not found.");
+            }
+
+            course.Assignments.Remove(assignmentId);
+            await _courseRepository.UpdateCourseAsync(course);
+
+            await _assignmentRepository.DeleteAssignmentAsync(assignmentId);
+
+            return Ok(new { Message = "Assignment deleted successfully" });
+        }
     }
 }

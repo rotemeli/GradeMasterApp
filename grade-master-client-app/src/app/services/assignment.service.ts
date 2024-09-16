@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Assignment, IAssignmentData } from '../models/assignment.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,15 @@ export class AssignmentService {
     return this._http.put(
       this.baseUrl + `update-assignment/${assignmentId}`,
       assignmentData
+    );
+  }
+
+  deleteAssignmentById(
+    assignmentId: string,
+    courseId: string
+  ): Observable<any> {
+    return this._http.delete(
+      this.baseUrl + `delete-assignment/${assignmentId}/${courseId}`
     );
   }
 }

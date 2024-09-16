@@ -38,5 +38,12 @@ namespace GradeMasterApp.Repositories
             var filter = Builders<Assignment>.Filter.Eq(a => a.Id, assignment.Id);
             await _assignmentsCollection.ReplaceOneAsync(filter, assignment);
         }
+
+        // Delete an assignment by its ID
+        public async Task DeleteAssignmentAsync(string assignmentId)
+        {
+            var filter = Builders<Assignment>.Filter.Eq(a => a.Id, assignmentId);
+            await _assignmentsCollection.DeleteOneAsync(filter);
+        }
     }
 }

@@ -8,11 +8,17 @@ import { Assignment } from '../../../models/assignment.model';
 })
 export class AssignmentsListComponent {
   @Input() assignments: Assignment[] = [];
+  @Input() isDeleting: { [key: string]: boolean } = {};
   @Output() editAssignment: EventEmitter<Assignment> =
     new EventEmitter<Assignment>();
+  @Output() deleteAssignment: EventEmitter<string> = new EventEmitter<string>();
 
   onEditAssignment(assignment: Assignment) {
     this.editAssignment.emit(assignment);
+  }
+
+  onDeleteAssignment(assignmentId: string) {
+    this.deleteAssignment.emit(assignmentId);
   }
 
   updateGrades(id: string) {}
