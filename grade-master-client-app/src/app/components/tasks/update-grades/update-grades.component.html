@@ -1,9 +1,19 @@
-<form
-  (ngSubmit)="onSubmit()"
-  fxLayout="column"
-  fxLayoutGap="20px"
-  class="grades-form"
->
+<form fxLayout="column" fxLayoutGap="20px" class="grades-form">
+  <!-- Search Input -->
+  <div fxLayout="row" fxLayoutAlign="center center" class="search-container">
+    <mat-form-field appearance="outline" fxFlex="50%">
+      <mat-label>Search Students</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        type="text"
+        name="search-input"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by name or ID"
+      />
+    </mat-form-field>
+  </div>
+
   <div
     *ngIf="isLoading"
     fxLayout="row"
@@ -12,9 +22,10 @@
   >
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
   </div>
+
   <div *ngIf="!isLoading">
     <div
-      *ngFor="let student of students; let i = index"
+      *ngFor="let student of filteredStudents; let idx = index"
       class="student-card-wrapper"
       fxLayoutAlign="center"
     >
@@ -33,7 +44,7 @@
             </div>
           </mat-card-subtitle>
         </mat-card-header>
-
+        <!-- Grade Field -->
         <mat-card-content fxLayout="column" fxLayoutGap="16px">
           <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
             <mat-form-field
@@ -47,34 +58,34 @@
                 matInput
                 type="number"
                 [(ngModel)]="student.assignmentsSubmission.grade"
-                name="grade{{ i }}"
+                name="grade{{ idx }}"
                 placeholder="0-100"
                 min="0"
                 max="100"
               />
             </mat-form-field>
           </div>
-
+          <!-- Feedback Field -->
           <mat-form-field appearance="outline" fxFlex class="feedback-input">
             <mat-label>Feedback</mat-label>
             <mat-icon matPrefix>feedback</mat-icon>
             <textarea
               matInput
               [(ngModel)]="student.assignmentsSubmission.feedback"
-              name="feedback{{ i }}"
+              name="feedback{{ idx }}"
               placeholder="Enter feedback"
               rows="4"
             ></textarea>
           </mat-form-field>
+          <!-- Submit Button -->
+          <div fxLayoutAlign="center center">
+            <button mat-fab extended (click)="submitStudent(student)">
+              <mat-icon>grading</mat-icon>
+              Submit Grade for {{ student.firstName }}
+            </button>
+          </div>
         </mat-card-content>
       </mat-card>
-    </div>
-
-    <div class="submit-button-sticky">
-      <button mat-fab extended type="submit">
-        <mat-icon>grading</mat-icon>
-        Submit Grades
-      </button>
     </div>
   </div>
 </form>

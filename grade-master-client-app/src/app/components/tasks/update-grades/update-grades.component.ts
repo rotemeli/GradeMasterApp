@@ -14,6 +14,7 @@ export class UpdateGradesComponent implements OnInit {
   taskId: string | null = null;
   courseId: string | null = null;
   students: ITaskStudentData[] = [];
+  searchTerm: string = '';
   isLoading!: boolean;
 
   constructor(
@@ -55,5 +56,26 @@ export class UpdateGradesComponent implements OnInit {
       });
   }
 
-  onSubmit(): void {}
+  get filteredStudents(): ITaskStudentData[] {
+    const term = this.searchTerm.toLowerCase();
+
+    const filtered = this.students.filter(
+      (student) =>
+        student.firstName.toLowerCase().includes(term) ||
+        student.lastName.toLowerCase().includes(term) ||
+        student.studentId.toString().toLowerCase().includes(term)
+    );
+
+    // sort the filtered students by last name
+    return filtered.sort((a, b) => {
+      const nameA = a.lastName.toLowerCase();
+      const nameB = b.lastName.toLowerCase();
+
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+  }
+
+  submitStudent(student: ITaskStudentData) {}
 }
