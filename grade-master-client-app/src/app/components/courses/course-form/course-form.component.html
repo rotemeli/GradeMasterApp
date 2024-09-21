@@ -1,108 +1,85 @@
-<mat-card
-  class="main-card"
-  fxLayout="column"
-  fxLayoutAlign="center center"
-  fxLayoutGap="18px"
+<app-form-card
+  [title]="isEditMode ? 'Edit Course' : 'Add Course'"
+  [formGroup]="courseForm"
+  [isLoading]="isLoading"
+  (onSubmit)="onSubmit()"
+  (onCancel)="onCancel()"
 >
-  <mat-card-title>{{
-    isEditMode ? 'Edit Course' : 'Add Course'
-  }}</mat-card-title>
-  <mat-card-content class="full-width">
-    <form
-      [formGroup]="courseForm"
-      (ngSubmit)="onSubmit()"
-      fxLayout="column"
-      fxLayoutGap="32px"
+  <!-- Course Name Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Course Name</mat-label>
+    <mat-icon matPrefix>school</mat-icon>
+    <input
+      matInput
+      type="text"
+      placeholder="Course Name"
+      name="courseName"
+      formControlName="courseName"
+    />
+    <mat-error *ngIf="courseForm.get('courseName')?.hasError">
+      Course Name is required and must contain at least 2 characters without
+      special characters.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Course Description Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Course Description</mat-label>
+    <mat-icon matPrefix>description</mat-icon>
+    <input
+      matInput
+      type="text"
+      placeholder="Course Description"
+      name="description"
+      formControlName="description"
+    />
+    <mat-error *ngIf="courseForm.get('description')?.hasError">
+      Course Description is required and must contain at least 3 characters
+      without special characters.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Number of Lectures Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Number of Lectures</mat-label>
+    <mat-icon matPrefix>event</mat-icon>
+    <input
+      matInput
+      type="number"
+      placeholder="Number of Lectures"
+      name="numberOfLectures"
+      formControlName="numberOfLectures"
+    />
+    <mat-error *ngIf="courseForm.get('numberOfLectures')?.hasError">
+      Number of Lectures is required and must be a positive number.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- CSV Upload Field -->
+  <div *ngIf="!isEditMode" fxLayout="column" fxLayoutGap="8px">
+    <mat-label class="upload-students-label">
+      Upload Course Students (Accepted formats: .xlsx, .xls, .csv)
+    </mat-label>
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      accept=".xlsx, .xls, .csv"
+      hidden
+      #fileInput
+    />
+    <button
+      mat-raised-button
+      type="button"
+      (click)="fileInput.click()"
+      [disabled]="isLoading"
     >
-      <!-- Course Name Field -->
-      <mat-form-field appearance="outline">
-        <mat-label>Course Name</mat-label>
-        <mat-icon matPrefix>school</mat-icon>
-        <input
-          matInput
-          type="text"
-          placeholder="Course Name"
-          name="courseName"
-          formControlName="courseName"
-        />
-        <mat-error *ngIf="courseForm.get('courseName')?.hasError">
-          Course Name is required and must contain at least 2 characters without
-          special characters.
-        </mat-error>
-      </mat-form-field>
-      <!-- Course Description Field -->
-      <mat-form-field appearance="outline">
-        <mat-label>Course Description</mat-label>
-        <mat-icon matPrefix>description</mat-icon>
-        <input
-          matInput
-          type="text"
-          placeholder="Course Description"
-          name="description"
-          formControlName="description"
-        />
-        <mat-error *ngIf="courseForm.get('description')?.hasError">
-          Course Description is required and must contain at least 3 characters
-          without special characters.
-        </mat-error>
-      </mat-form-field>
-      <!-- Number of Lectures Field -->
-      <mat-form-field appearance="outline">
-        <mat-label>Number of Lectures</mat-label>
-        <mat-icon matPrefix>event</mat-icon>
-        <input
-          matInput
-          type="number"
-          placeholder="Number of Lectures"
-          name="numberOfLectures"
-          formControlName="numberOfLectures"
-        />
-        <mat-error *ngIf="courseForm.get('numberOfLectures')?.hasError">
-          Number of Lectures is required and must be a positive number.
-        </mat-error>
-      </mat-form-field>
-      <!-- CSV Upload Field -->
-      <div *ngIf="!isEditMode" fxLayout="column" fxLayoutGap="8px">
-        <mat-label class="upload-students-label">
-          Upload Course Students (Accepted formats: .xlsx, .xls, .csv)
-        </mat-label>
-        <input
-          type="file"
-          (change)="onFileSelected($event)"
-          accept=".xlsx, .xls, .csv"
-          hidden
-          #fileInput
-        />
-        <button
-          mat-raised-button
-          type="button"
-          (click)="fileInput.click()"
-          [disabled]="isLoading"
-        >
-          <mat-icon>upload</mat-icon> Upload File
-        </button>
-        <div *ngIf="selectedFile" class="file-name">
-          Selected file: {{ selectedFile.name }}
-        </div>
-        <mat-error *ngIf="!selectedFile && formSubmitted">
-          Please upload a student list file.
-        </mat-error>
-      </div>
-      <div
-        *ngIf="isLoading"
-        class="spinner-container"
-        fxLayoutAlign="center center"
-      >
-        <mat-spinner></mat-spinner>
-      </div>
-      <div fxLayoutGap="16px" fxLayoutAlign="center stretch">
-        <button mat-raised-button type="submit" [disabled]="isLoading">
-          Submit
-        </button>
-        <button mat-button (click)="onCancel()" [disabled]="isLoading">
-          Cancel
-        </button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+      <mat-icon>upload</mat-icon> Upload File
+    </button>
+    <div *ngIf="selectedFile" class="file-name">
+      Selected file: {{ selectedFile.name }}
+    </div>
+    <mat-error *ngIf="!selectedFile && formSubmitted">
+      Please upload a student list file.
+    </mat-error>
+  </div>
+</app-form-card>

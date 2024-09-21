@@ -47,6 +47,7 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { AssignmentFormComponent } from './components/tasks/assignment-form/assignment-form.component';
 import { AssignmentsListComponent } from './components/tasks/assignments-list/assignments-list.component';
 import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
+import { FormCardComponent } from './components/dialogs/form-card/form-card.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { UpdateGradesComponent } from './components/tasks/update-grades/update-g
     AssignmentFormComponent,
     AssignmentsListComponent,
     UpdateGradesComponent,
+    FormCardComponent,
   ],
   imports: [
     BrowserModule,
