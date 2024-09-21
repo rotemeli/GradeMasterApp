@@ -1,0 +1,81 @@
+<div class="main-container" fxLayout="column" fxLayoutGap="16px">
+  <app-course-select
+    (coursesLoaded)="onCoursesLoaded($event)"
+    (courseSelected)="onCourseSelected($event)"
+  >
+  </app-course-select>
+  <h5 fxLayoutAlign="center center">Course Tasks Management</h5>
+  <div
+    *ngIf="!isLoading && !selectedCourse"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
+    <h5>* Select a course to view and manage tasks</h5>
+  </div>
+  <div
+    *ngIf="!isLoading && selectedCourse"
+    fxLayout="column"
+    fxLayoutGap="20px"
+  >
+    <h5 fxLayoutAlign="center center">
+      Manage tasks for {{ selectedCourse.courseName }}
+    </h5>
+
+    <div fxLayout="column" fxLayoutGap="32px">
+      <!-- Assignments Section -->
+      <div fxLayout="column" fxLayoutGap="20px" class="assignments-section">
+        <div
+          class="new-assignment"
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          fxLayoutGap="10px"
+        >
+          <span class="section-title" fxLayoutAlign="center stretch">
+            Assignments
+          </span>
+          <span class="add-assignment-message">
+            Add a new assignment to this course by clicking the button below.
+          </span>
+          <button
+            class="add-assignment-btn"
+            mat-raised-button
+            (click)="openAssignmentForm()"
+          >
+            Add New Assignment
+          </button>
+        </div>
+        <app-assignments-list
+          [assignments]="this.assignments"
+          [isDeleting]="isDeleting"
+          (editAssignment)="openAssignmentForm($event)"
+          (deleteAssignment)="onDeleteAssignment($event)"
+          (updateGrades)="onUpdateGrades($event)"
+        ></app-assignments-list>
+      </div>
+
+      <!-- Exams Section -->
+      <div fxLayoutGap="10px" class="exams-section">
+        <div
+          class="new-item"
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          fxLayoutGap="10px"
+        >
+          <span class="section-title" fxLayoutAlign="center stretch"
+            >Exams</span
+          >
+          <span class="add-item-message">
+            Add a new exam to this course by clicking the button below.
+          </span>
+          <button
+            class="add-item-btn"
+            mat-raised-button
+            (click)="openExamForm()"
+          >
+            Add New Exam
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

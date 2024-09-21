@@ -56,7 +56,7 @@ export class CourseDetailsComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (students) => {
-          this.students = students;
+          this.students = this.sortedStudents(students);
           this.length = this.students.length;
           this.paginate({
             pageIndex: this.pageIndex,
@@ -70,6 +70,17 @@ export class CourseDetailsComponent implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+
+  sortedStudents(students: any[]) {
+    return students.sort((a, b) => {
+      const nameA = a.lastName.toLowerCase();
+      const nameB = b.lastName.toLowerCase();
+
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
   }
 
   paginate(event: PageEvent) {

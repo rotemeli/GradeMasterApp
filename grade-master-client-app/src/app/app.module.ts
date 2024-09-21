@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 import {
   BrowserModule,
   provideClientHydration,
@@ -25,6 +25,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ToastrModule } from 'ngx-toastr';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { AttendanceComponent } from './components/attendance/attendance.component';
@@ -40,6 +42,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CourseDetailsComponent } from './components/courses/course-details/course-details.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { StudentFormComponent } from './components/student-form/student-form.component';
+import { CourseSelectComponent } from './components/courses/course-select/course-select.component';
+import { TasksComponent } from './components/tasks/tasks.component';
+import { AssignmentFormComponent } from './components/tasks/assignment-form/assignment-form.component';
+import { AssignmentsListComponent } from './components/tasks/assignments-list/assignments-list.component';
+import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +64,11 @@ import { StudentFormComponent } from './components/student-form/student-form.com
     PageNotFoundComponent,
     CourseDetailsComponent,
     StudentFormComponent,
+    CourseSelectComponent,
+    TasksComponent,
+    AssignmentFormComponent,
+    AssignmentsListComponent,
+    UpdateGradesComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +86,7 @@ import { StudentFormComponent } from './components/student-form/student-form.com
     MatInputModule,
     MatButtonModule,
     MatMenuModule,
+    MatDatepickerModule,
     MatDividerModule,
     MatTableModule,
     MatSelectModule,
@@ -91,6 +104,7 @@ import { StudentFormComponent } from './components/student-form/student-form.com
     provideClientHydration(),
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
+    provideNativeDateAdapter(),
   ],
   bootstrap: [AppComponent],
 })

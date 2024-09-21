@@ -11,10 +11,6 @@ export class StudentService {
 
   constructor(private _http: HttpClient) {}
 
-  saveStudents(students: any[]): Observable<any> {
-    return this._http.post(this.baseUrl + 'upload-students', { students });
-  }
-
   getStudentsByCourseId(courseId: string) {
     return this._http.get<any[]>(
       this.baseUrl + `get-students-by-course/${courseId}`

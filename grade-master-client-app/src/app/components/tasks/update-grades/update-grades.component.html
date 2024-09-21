@@ -1,0 +1,91 @@
+<form fxLayout="column" fxLayoutGap="20px" class="grades-form">
+  <!-- Search Input -->
+  <div fxLayout="row" fxLayoutAlign="center center" class="search-container">
+    <mat-form-field appearance="outline" fxFlex="50%">
+      <mat-label>Search Students</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        type="text"
+        name="search-input"
+        [(ngModel)]="searchTerm"
+        placeholder="Search by name or ID"
+      />
+    </mat-form-field>
+  </div>
+
+  <div
+    *ngIf="isLoading"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    class="spinner-container"
+  >
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <div
+      *ngFor="let student of filteredStudents; let idx = index"
+      class="student-card-wrapper"
+      fxLayoutAlign="center"
+    >
+      <mat-card fxLayout="column" fxLayoutGap="16px" class="student-card">
+        <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-card-title>
+            <div fxLayout="row" fxLayoutGap="8px">
+              <mat-icon>person</mat-icon>
+              <span>{{ student.firstName }} {{ student.lastName }}</span>
+            </div>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <div fxLayout="row" fxLayoutGap="8px">
+              <mat-icon>badge</mat-icon>
+              <span>Student ID: {{ student.studentId }}</span>
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <!-- Grade Field -->
+        <mat-card-content fxLayout="column" fxLayoutGap="16px">
+          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
+            <mat-form-field
+              appearance="outline"
+              fxFlex="25%"
+              class="grade-input"
+            >
+              <mat-label>Grade</mat-label>
+              <mat-icon matPrefix>grade</mat-icon>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="student.assignmentsSubmission.grade"
+                name="grade{{ idx }}"
+                placeholder="0-100"
+                min="0"
+                max="100"
+              />
+            </mat-form-field>
+          </div>
+          <!-- Feedback Field -->
+          <mat-form-field appearance="outline" fxFlex class="feedback-input">
+            <mat-label>Feedback</mat-label>
+            <mat-icon matPrefix>feedback</mat-icon>
+            <textarea
+              matInput
+              [(ngModel)]="student.assignmentsSubmission.feedback"
+              name="feedback{{ idx }}"
+              placeholder="Enter feedback"
+              rows="4"
+            ></textarea>
+          </mat-form-field>
+          <!-- Submit Button -->
+          <div fxLayoutAlign="center center">
+            <button mat-fab extended (click)="submitStudent(student)">
+              <mat-icon>grading</mat-icon>
+              Submit Grade for {{ student.firstName }}
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</form>

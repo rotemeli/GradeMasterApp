@@ -28,7 +28,6 @@
     <h4>Your Courses</h4>
     <ng-container *ngIf="courses && courses.length > 0; else noCourses">
       <div
-        class="courses-grid"
         fxLayout="row"
         fxLayoutGap="20px"
         fxLayoutAlign="start stretch"
@@ -37,10 +36,12 @@
         <mat-card *ngFor="let course of courses">
           <mat-card-header>
             <mat-card-title>{{ course.courseName }}</mat-card-title>
-            <mat-card-subtitle>{{ course.description }}</mat-card-subtitle>
+            <mat-card-subtitle>
+              <p><strong>Description: </strong>{{ course.description }}</p>
+            </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <p><strong>Lectures:</strong> {{ course.numberOfLectures }}</p>
+            <p><strong>Lectures:</strong>{{ course.numberOfLectures }}</p>
           </mat-card-content>
           <mat-card-actions fxLayoutGap="10px" fxLayoutAlign="end">
             <!-- View Details Button -->
