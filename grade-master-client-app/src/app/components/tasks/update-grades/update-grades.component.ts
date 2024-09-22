@@ -92,6 +92,14 @@ export class UpdateGradesComponent implements OnInit {
 
   submitStudent(student: ITaskStudentData): void {
     const submission = student.assignmentSubmission;
+    if (
+      submission.grade == null ||
+      submission.grade < 0 ||
+      submission.grade > 100
+    ) {
+      this._toastr.error('Grade is required and must be between 0 and 100');
+      return;
+    }
     this.isSubmitting[student.id] = true;
 
     if (!submission.id) {
@@ -108,10 +116,10 @@ export class UpdateGradesComponent implements OnInit {
         .subscribe({
           next: (response) => {
             student.assignmentSubmission.id = response.id;
-            console.log('New submission created:', response);
+            this._toastr.success('Grade updated successfully');
           },
           error: (err) => {
-            console.error('Failed to create new submission:', err);
+            console.log(err);
           },
           complete: () => (this.isSubmitting[student.id] = false),
         });
