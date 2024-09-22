@@ -7,14 +7,14 @@ namespace GradeMasterApp.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string? Id { get; set; } = ObjectId.GenerateNewId().ToString();
         [BsonRepresentation(BsonType.ObjectId)]
         public string AssignmentId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string StudentId { get; set; }
-        public DateTime SubmissionDate { get; set; }
-        public string SubmissionContent { get; set; }
         public double? Grade { get; set; }
-        public string Feedback { get; set; }
+        public string Feedback { get; set; } = string.Empty;
+
+        public DateTime SubmissionDate { get; set; } = DateTime.Now;
     }
 }

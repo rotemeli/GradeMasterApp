@@ -132,7 +132,5 @@ namespace GradeMasterApp.Controllers
 
             return Ok(new { Message = "Student removed from course successfully." });
         }
-
-
     }
 }

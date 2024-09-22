@@ -1,4 +1,5 @@
 import { EAttendanceStatus } from '../enums/attendance-status.enum';
+import { IAssignmentSubmission } from './assignment.model';
 
 export interface Student {
   id: string;
@@ -18,8 +19,9 @@ export interface IStudentData {
 }
 
 export interface ITaskStudentData {
+  id: string;
   firstName: string;
   lastName: string;
   studentId: number;
-  assignmentsSubmission: any;
+  assignmentSubmission: IAssignmentSubmission;
 }

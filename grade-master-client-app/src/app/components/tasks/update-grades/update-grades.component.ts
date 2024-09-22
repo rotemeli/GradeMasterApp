@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { StudentService } from '../../../services/student.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ITaskStudentData } from '../../../models/student.model';
+import { AssignmentSubmissionService } from '../../../services/assignment-submission.service';
+import { IAssignmentSubmission } from '../../../models/assignment.model';
+import { ToastrService } from 'ngx-toastr';
 
 @UntilDestroy()
 @Component({
@@ -16,10 +19,13 @@ export class UpdateGradesComponent implements OnInit {
   students: ITaskStudentData[] = [];
   searchTerm: string = '';
   isLoading!: boolean;
+  isSubmitting: { [key: string]: boolean } = {};
 
   constructor(
     private _studentSvc: StudentService,
-    private _route: ActivatedRoute
+    private _assignmentSubmissionSvc: AssignmentSubmissionService,
+    private _route: ActivatedRoute,
+    private _toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -37,14 +43,21 @@ export class UpdateGradesComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.students = res.map((student) => {
-            const studentAssignment = student.assignmentsSubmissions.filter(
+            const studentAssignment = student.assignmentsSubmissions.find(
               (submission: any) => submission.assignmentId === this.taskId
             );
+
             return {
+              id: student.id,
               firstName: student.firstName,
               lastName: student.lastName,
               studentId: student.studentId,
-              assignmentsSubmission: studentAssignment,
+              assignmentSubmission: studentAssignment || {
+                assignmentId: this.taskId,
+                studentId: student.id,
+                grade: null,
+                feedback: '',
+              },
             };
           });
           this.isLoading = false;
@@ -77,5 +90,48 @@ export class UpdateGradesComponent implements OnInit {
     });
   }
 
-  submitStudent(student: ITaskStudentData) {}
+  submitStudent(student: ITaskStudentData): void {
+    const submission = student.assignmentSubmission;
+    this.isSubmitting[student.id] = true;
+
+    if (!submission.id) {
+      const newSubmission: IAssignmentSubmission = {
+        assignmentId: this.taskId,
+        studentId: student.id,
+        grade: submission.grade,
+        feedback: submission.feedback,
+      };
+
+      this._assignmentSubmissionSvc
+        .addNewAssignmentSubmission(student.id, newSubmission)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (response) => {
+            student.assignmentSubmission.id = response.id;
+            console.log('New submission created:', response);
+          },
+          error: (err) => {
+            console.error('Failed to create new submission:', err);
+          },
+          complete: () => (this.isSubmitting[student.id] = false),
+        });
+    } else {
+      this._assignmentSubmissionSvc
+        .updateSubmission(submission)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (res) => {
+            this._toastr.success(res.message);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => (this.isSubmitting[student.id] = false),
+        });
+    }
+  }
+
+  isStudentSubmitting(studentId: string): boolean {
+    return this.isSubmitting[studentId] || false;
+  }
 }

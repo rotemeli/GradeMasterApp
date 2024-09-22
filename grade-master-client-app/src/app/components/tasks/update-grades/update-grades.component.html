@@ -57,7 +57,7 @@
               <input
                 matInput
                 type="number"
-                [(ngModel)]="student.assignmentsSubmission.grade"
+                [(ngModel)]="student.assignmentSubmission.grade"
                 name="grade{{ idx }}"
                 placeholder="0-100"
                 min="0"
@@ -71,7 +71,7 @@
             <mat-icon matPrefix>feedback</mat-icon>
             <textarea
               matInput
-              [(ngModel)]="student.assignmentsSubmission.feedback"
+              [(ngModel)]="student.assignmentSubmission.feedback"
               name="feedback{{ idx }}"
               placeholder="Enter feedback"
               rows="4"
@@ -79,9 +79,32 @@
           </mat-form-field>
           <!-- Submit Button -->
           <div fxLayoutAlign="center center">
-            <button mat-fab extended (click)="submitStudent(student)">
-              <mat-icon>grading</mat-icon>
-              Submit Grade for {{ student.firstName }}
+            <button
+              mat-fab
+              extended
+              (click)="submitStudent(student)"
+              [disabled]="isStudentSubmitting(student.id)"
+            >
+              <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="8px"
+              >
+                <mat-icon *ngIf="!isStudentSubmitting(student.id)"
+                  >grading</mat-icon
+                >
+                <mat-progress-spinner
+                  *ngIf="isStudentSubmitting(student.id)"
+                  mode="indeterminate"
+                  diameter="20"
+                  strokeWidth="2"
+                ></mat-progress-spinner>
+                <span>{{
+                  isStudentSubmitting(student.id)
+                    ? 'Submitting...'
+                    : 'Submit Grade for ' + student.firstName
+                }}</span>
+              </div>
             </button>
           </div>
         </mat-card-content>
