@@ -44,5 +44,28 @@ namespace GradeMasterApp.Repositories
             var filter = Builders<Student>.Filter.In(s => s.Id, studentIds);
             return await _studentsCollection.Find(filter).ToListAsync();
         }
+
+        // Add a new assignment submission
+        public async Task AddAssignmentSubmissionAsync(string studentId, AssignmentSubmission submission)
+        {
+            var filter = Builders<Student>.Filter.Eq(s => s.Id, studentId);
+            var update = Builders<Student>.Update.Push(s => s.AssignmentsSubmissions, submission);
+
+            await _studentsCollection.UpdateOneAsync(filter, update);
+        }
+
+        // Update an existing assignment submission
+        public async Task UpdateAssignmentSubmissionAsync(string studentId, AssignmentSubmission updatedSubmission)
+        {
+            var filter = Builders<Student>.Filter.Eq(s => s.Id, studentId) &
+                         Builders<Student>.Filter.Eq("AssignmentsSubmissions.AssignmentId", updatedSubmission.AssignmentId);
+
+            var update = Builders<Student>.Update
+                .Set("AssignmentsSubmissions.$.Grade", updatedSubmission.Grade)
+                .Set("AssignmentsSubmissions.$.Feedback", updatedSubmission.Feedback)
+                .Set("AssignmentsSubmissions.$.SubmissionDate", updatedSubmission.SubmissionDate);
+
+            var result = await _studentsCollection.UpdateOneAsync(filter, update);
+        }
     }
 }

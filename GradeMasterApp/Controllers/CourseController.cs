@@ -14,15 +14,18 @@ namespace GradeMasterApp.Controllers
         private readonly CourseRepository _courseRepository;
         private readonly EnrollmentRepository _enrollmentRepository;
         private readonly StudentRepository _studentRepository;
+        private readonly AssignmentRepository _assignmentRepository;
 
         public CourseController(
             CourseRepository courseRepository,
             EnrollmentRepository enrollmentRepository,
-            StudentRepository studentRepository)
+            StudentRepository studentRepository,
+            AssignmentRepository assignmentRepository)
         {
             _courseRepository = courseRepository;
             _enrollmentRepository = enrollmentRepository;
             _studentRepository = studentRepository;
+            _assignmentRepository = assignmentRepository;
         }
 
         // Create a new course and enroll students
@@ -187,6 +190,11 @@ namespace GradeMasterApp.Controllers
                     }
                 }
                 await _enrollmentRepository.DeleteEnrollmentAsync(enrollmentId);
+            }
+
+            foreach (var assignmentId in course.Assignments)
+            {
+                await _assignmentRepository.DeleteAssignmentAsync(assignmentId);
             }
 
             await _courseRepository.DeleteCourseAsync(id);

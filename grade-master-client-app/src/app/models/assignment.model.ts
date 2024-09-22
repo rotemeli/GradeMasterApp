@@ -14,3 +14,11 @@ export interface IAssignmentData {
     dueDate: Date;
   };
 }
+
+export interface IAssignmentSubmission {
+  id?: string;
+  assignmentId: string | null;
+  studentId: string;
+  grade?: number;
+  feedback: string;
+}
