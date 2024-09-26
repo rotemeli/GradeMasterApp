@@ -36,33 +36,59 @@ export class CourseFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.courseForm = this.fb.group({
-      courseName: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          this.noSpecialCharsValidator(),
-          this.noWhitespaceValidator(),
+    this.courseForm = this.fb.group(
+      {
+        courseName: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(2),
+            this.noSpecialCharsValidator(),
+            this.noWhitespaceValidator(),
+          ],
         ],
-      ],
-      description: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          this.noSpecialCharsValidator(),
-          this.noWhitespaceValidator(),
+        description: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            this.noSpecialCharsValidator(),
+            this.noWhitespaceValidator(),
+          ],
         ],
-      ],
-      numberOfLectures: ['', [Validators.required, Validators.min(1)]],
-    });
+        numberOfLectures: ['', [Validators.required, Validators.min(1)]],
+        assignmentsWeight: [
+          '',
+          [Validators.required, Validators.min(0), Validators.max(100)],
+        ],
+        finalExamWeight: [
+          '',
+          [Validators.required, Validators.min(0), Validators.max(100)],
+        ],
+      },
+      {
+        validator: this.checkTotalWeight,
+      }
+    );
 
     // For Edit Mode
     if (this.data && this.data.course) {
       this.isEditMode = true;
       this.courseForm.patchValue(this.data.course);
     }
+  }
+
+  checkTotalWeight(group: FormGroup): { [key: string]: boolean } | null {
+    const assignmentsWeight = group.get('assignmentsWeight')?.value;
+    const finalExamWeight = group.get('finalExamWeight')?.value;
+
+    if (assignmentsWeight != null && finalExamWeight != null) {
+      return assignmentsWeight + finalExamWeight === 100
+        ? null
+        : { weightMismatch: true };
+    }
+
+    return null;
   }
 
   noSpecialCharsValidator(): ValidatorFn {
@@ -140,6 +166,8 @@ export class CourseFormComponent implements OnInit {
       description: this.courseForm.get('description')?.value,
       numberOfLectures: this.courseForm.get('numberOfLectures')?.value,
       students: this.students,
+      assignmentsWeight: this.courseForm.get('assignmentsWeight')?.value,
+      finalExamWeight: this.courseForm.get('finalExamWeight')?.value,
     };
     if (this.isEditMode) {
       this._courseSvc

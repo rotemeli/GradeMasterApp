@@ -116,5 +116,15 @@ namespace GradeMasterApp.Repositories
 
             await _studentsCollection.UpdateManyAsync(filter, update);
         }
+
+        // Get a list of students who have submitted an exam with the given examId.
+        public async Task<List<Student>> GetStudentsByExamIdAsync(string examId)
+        {
+            var filter = Builders<Student>.Filter.And(
+                Builders<Student>.Filter.Not(Builders<Student>.Filter.Eq(s => s.ExamSubmission, null)), // Ensure ExamSubmission exists
+                Builders<Student>.Filter.Eq(s => s.ExamSubmission!.ExamId, examId) // Match ExamId
+            );
+            return await _studentsCollection.Find(filter).ToListAsync();
+        }
     }
 }

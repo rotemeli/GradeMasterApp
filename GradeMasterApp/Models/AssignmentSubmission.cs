@@ -14,7 +14,6 @@ namespace GradeMasterApp.Models
         public string StudentId { get; set; }
         public double? Grade { get; set; }
         public string Feedback { get; set; } = string.Empty;
-
         public DateTime SubmissionDate { get; set; } = DateTime.Now;
     }
 }

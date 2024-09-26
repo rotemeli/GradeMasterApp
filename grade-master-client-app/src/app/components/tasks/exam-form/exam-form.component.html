@@ -1,0 +1,49 @@
+<app-form-card
+  [title]="isEditMode ? 'Edit Final Exam' : 'Add Final Exam'"
+  [formGroup]="examForm"
+  [isLoading]="isLoading"
+  (onSubmit)="onSubmit()"
+  (onCancel)="onCancel()"
+>
+  <!-- Exam Title Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Exam Title</mat-label>
+    <mat-icon matPrefix>school</mat-icon>
+    <input
+      matInput
+      type="text"
+      placeholder="Title"
+      name="title"
+      formControlName="title"
+    />
+    <mat-error *ngIf="examForm.get('title')?.hasError('required')">
+      Title is required.
+    </mat-error>
+    <mat-error *ngIf="examForm.get('title')?.hasError('minlength')">
+      Title must contain at least 2 characters.
+    </mat-error>
+    <mat-error *ngIf="examForm.get('title')?.hasError('forbiddenChars')">
+      Title must not contain special characters.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Exam Date Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Exam Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="dueDatePicker"
+      placeholder="Exam Date"
+      formControlName="examDate"
+    />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="dueDatePicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #dueDatePicker></mat-datepicker>
+    <mat-error *ngIf="examForm.get('examDate')?.hasError('required')">
+      Date is required.
+    </mat-error>
+  </mat-form-field>
+</app-form-card>

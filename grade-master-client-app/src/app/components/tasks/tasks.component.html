@@ -14,6 +14,7 @@
   </div>
   <div
     *ngIf="!isLoading && selectedCourse"
+    class="tasks-container"
     fxLayout="column"
     fxLayoutGap="20px"
   >
@@ -49,31 +50,45 @@
           [isDeleting]="isDeleting"
           (editAssignment)="openAssignmentForm($event)"
           (deleteAssignment)="onDeleteAssignment($event)"
-          (updateGrades)="onUpdateGrades($event)"
+          (updateGrades)="onUpdateAssignment($event)"
         ></app-assignments-list>
       </div>
 
       <!-- Exams Section -->
-      <div fxLayoutGap="10px" class="exams-section">
+      <div fxLayoutGap="12px" class="exams-section">
         <div
           class="new-item"
           fxLayout="column"
           fxLayoutAlign="center center"
           fxLayoutGap="10px"
         >
-          <span class="section-title" fxLayoutAlign="center stretch"
-            >Exams</span
+          <span class="section-title">Final Exam</span>
+          <div
+            fxLayoutAlign="center center"
+            fxLayout="column"
+            fxLayoutGap="10px"
+            *ngIf="!exam"
           >
-          <span class="add-item-message">
-            Add a new exam to this course by clicking the button below.
-          </span>
-          <button
-            class="add-item-btn"
-            mat-raised-button
-            (click)="openExamForm()"
-          >
-            Add New Exam
-          </button>
+            <span class="add-item-message">
+              Add a final exam to this course by clicking the button below.
+            </span>
+            <button
+              class="add-item-btn"
+              mat-raised-button
+              (click)="openExamForm()"
+            >
+              Add Final Exam
+            </button>
+          </div>
+          <div *ngIf="exam">
+            <app-exam-card
+              [exam]="exam"
+              [isDeleting]="isDeleting"
+              (editExam)="openExamForm($event)"
+              (deleteExam)="onDeleteExam($event)"
+              (updateGrades)="onUpdateExam($event)"
+            ></app-exam-card>
+          </div>
         </div>
       </div>
     </div>
