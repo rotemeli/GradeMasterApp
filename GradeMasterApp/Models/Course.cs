@@ -15,7 +15,6 @@ namespace GradeMasterApp.Models
         public int NumberOfLectures { get; set; }
         public int AssignmentWeight { get; set; }
         public int FinalExamWeight { get; set; }
-        public Exam? FinalExam { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public List<string> Enrollments { get; set; } = new List<string>();
