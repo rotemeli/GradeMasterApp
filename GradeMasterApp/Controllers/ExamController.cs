@@ -110,7 +110,7 @@ namespace GradeMasterApp.Controllers
 
             var tasks = new List<Task>();
 
-            var studentsWithSubmission = await _studentRepository.GetStudentsByExamIdAsync(examId);
+            var studentsWithSubmission = await _studentRepository.GetStudentsByAssignmentIdAsync(examId);
 
             foreach (var student in studentsWithSubmission)
             {
@@ -126,12 +126,9 @@ namespace GradeMasterApp.Controllers
 
         private async Task RemoveExamSubmissionFromStudentAsync(Student student, string examId)
         {
-            if (student.ExamSubmission != null && student.ExamSubmission.ExamId == examId)
-            {
-                student.ExamSubmission = null;
+            student.AssignmentsSubmissions.RemoveAll(sub => sub.AssignmentId == examId);
 
-                await _studentRepository.UpdateStudentAsync(student);
-            }
+            await _studentRepository.UpdateStudentAsync(student);
         }
     }
 }

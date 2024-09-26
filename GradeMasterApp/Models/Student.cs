@@ -17,6 +17,5 @@ namespace GradeMasterApp.Models
         public List<string> FinalGrades { get; set; } = new List<string>();
         public List<StudentAttendance> Attendances { get; set; } = new List<StudentAttendance>();
         public List<AssignmentSubmission> AssignmentsSubmissions { get; set; } = new List<AssignmentSubmission>();
-        public ExamSubmission? ExamSubmission { get; set; }
     }
 }
