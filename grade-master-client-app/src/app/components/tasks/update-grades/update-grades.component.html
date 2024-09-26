@@ -1,4 +1,13 @@
 <form fxLayout="column" fxLayoutGap="20px" class="grades-form">
+  <!-- Upload Grades -->
+  <div fxLayoutAlign="center center">
+    <app-upload-grades
+      fxFlex="30%"
+      [taskId]="taskId"
+      (isLoading)="onLoading($event)"
+    ></app-upload-grades>
+  </div>
+
   <!-- Search Input -->
   <div fxLayout="row" fxLayoutAlign="center center" class="search-container">
     <mat-form-field appearance="outline" fxFlex="50%">

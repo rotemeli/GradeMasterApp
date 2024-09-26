@@ -1,0 +1,26 @@
+<mat-card fxLayout="column" fxLayoutGap="10px" class="upload-card">
+  <mat-card-header fxLayoutAlign="center center">
+    <mat-card-title>
+      <mat-icon
+        class="file-icon"
+        matTooltip="Select an Excel file to upload students grades data."
+      >
+        description
+      </mat-icon>
+      Upload Grades Data
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content fxLayoutAlign="center center">
+    <input
+      type="file"
+      (change)="onFileChange($event)"
+      accept=".xlsx, .xls, .csv"
+      hidden
+      #fileInput
+    />
+    <button mat-raised-button (click)="fileInput.click()">
+      <mat-icon>upload</mat-icon>
+      Upload File
+    </button>
+  </mat-card-content>
+</mat-card>
