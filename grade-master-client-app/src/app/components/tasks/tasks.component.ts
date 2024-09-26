@@ -123,12 +123,12 @@ export class TasksComponent implements OnInit {
   }
 
   onUpdateAssignment(taskId: string) {
-    this._router.navigate(
-      ['/tasks', taskId, this.selectedCourse?.id, 'grades'],
-      {
-        queryParams: { taskType: 'assignment' },
-      }
-    );
+    this._router.navigate([
+      '/tasks',
+      taskId,
+      this.selectedCourse?.id,
+      'grades',
+    ]);
   }
 
   openExamForm(exam: Exam | null = null) {
@@ -173,11 +173,11 @@ export class TasksComponent implements OnInit {
   }
 
   onUpdateExam(taskId: string) {
-    this._router.navigate(
-      ['/tasks', taskId, this.selectedCourse?.id, 'grades'],
-      {
-        queryParams: { taskType: 'exam' },
-      }
-    );
+    this._router.navigate([
+      '/tasks',
+      taskId,
+      this.selectedCourse?.id,
+      'grades',
+    ]);
   }
 }
