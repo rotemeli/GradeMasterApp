@@ -142,4 +142,12 @@ export class UpdateGradesComponent implements OnInit {
   isStudentSubmitting(studentId: string): boolean {
     return this.isSubmitting[studentId] || false;
   }
+
+  onLoading(event: boolean) {
+    if (event === false) {
+      this.loadData();
+      return;
+    }
+    this.isLoading = event;
+  }
 }

@@ -67,5 +67,35 @@ namespace GradeMasterApp.Repositories
 
             var result = await _studentsCollection.UpdateOneAsync(filter, update);
         }
+
+        // Add a new submission or update an existing submission
+        public async Task AddOrUpdateAssignmentSubmissionAsync(string studentId, AssignmentSubmission submission)
+        {
+            var filter = Builders<Student>.Filter.Eq(s => s.Id, studentId) &
+                         Builders<Student>.Filter.ElemMatch(s => s.AssignmentsSubmissions, sub => sub.AssignmentId == submission.AssignmentId);
+
+            var existingStudent = await _studentsCollection.Find(filter).FirstOrDefaultAsync();
+
+            if (existingStudent != null)
+            {
+                // If the submission exists, update the grade
+                var update = Builders<Student>.Update
+                    .Set("AssignmentsSubmissions.$.Grade", submission.Grade)
+                    .Set("AssignmentsSubmissions.$.SubmissionDate", submission.SubmissionDate);
+
+                await _studentsCollection.UpdateOneAsync(filter, update);
+            }
+            else
+            {
+                // If the submission does not exist, add a new one
+                var pushSubmission = Builders<Student>.Update.Push(s => s.AssignmentsSubmissions, submission);
+
+                await _studentsCollection.UpdateOneAsync(
+                    Builders<Student>.Filter.Eq(s => s.Id, studentId),
+                    pushSubmission
+                );
+            }
+        }
+
     }
 }

@@ -194,10 +194,10 @@ namespace GradeMasterApp.Controllers
 
             foreach (var assignmentId in course.Assignments)
             {
-                await _assignmentRepository.DeleteAssignmentAsync(assignmentId);
+                await _assignmentRepository.DeleteAssignmentAsync(assignmentId).ConfigureAwait(false);
             }
 
-            await _courseRepository.DeleteCourseAsync(id);
+            await _courseRepository.DeleteCourseAsync(id).ConfigureAwait(false);
 
             return Ok(new { Message = "Course deleted successfully" });
         }

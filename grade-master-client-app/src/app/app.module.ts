@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
-import { CoursesListComponent } from './components/courses/courses-list/courses-list.component';
 import { LoginComponent } from './components/login/login.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -33,7 +32,6 @@ import { AttendanceComponent } from './components/attendance/attendance.componen
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { AttendanceTableComponent } from './components/attendance/attendance-table/attendance-table.component';
-import { CourseUploadComponent } from './components/courses/course-upload/course-upload.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -48,6 +46,7 @@ import { AssignmentFormComponent } from './components/tasks/assignment-form/assi
 import { AssignmentsListComponent } from './components/tasks/assignments-list/assignments-list.component';
 import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
 import { FormCardComponent } from './components/dialogs/form-card/form-card.component';
+import { UploadGradesComponent } from './components/tasks/update-grades/upload-grades/upload-grades.component';
 
 @NgModule({
   declarations: [
@@ -56,12 +55,10 @@ import { FormCardComponent } from './components/dialogs/form-card/form-card.comp
     HomeComponent,
     LoginComponent,
     CoursesComponent,
-    CoursesListComponent,
     CourseFormComponent,
     RegistrationComponent,
     AttendanceComponent,
     AttendanceTableComponent,
-    CourseUploadComponent,
     PageNotFoundComponent,
     CourseDetailsComponent,
     StudentFormComponent,
@@ -71,6 +68,7 @@ import { FormCardComponent } from './components/dialogs/form-card/form-card.comp
     AssignmentsListComponent,
     UpdateGradesComponent,
     FormCardComponent,
+    UploadGradesComponent,
   ],
   imports: [
     BrowserModule,
