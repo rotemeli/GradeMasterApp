@@ -8,7 +8,6 @@ export interface Course {
   numberOfLectures: string;
   assignmentWeight: number;
   finalExamWeight: number;
-  finalExam?: Exam;
 }
 
 export interface Mock {
