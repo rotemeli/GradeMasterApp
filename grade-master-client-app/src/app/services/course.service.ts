@@ -33,6 +33,7 @@ export class CourseService {
           numberOfLectures: course.numberOfLectures,
           assignmentWeight: course.assignmentWeight,
           finalExamWeight: course.finalExamWeight,
+          finalExam: course.finalExam ?? null,
         };
       })
     );
