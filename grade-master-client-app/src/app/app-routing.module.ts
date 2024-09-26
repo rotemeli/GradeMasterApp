@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { CourseDetailsComponent } from './components/courses/course-details/course-details.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
+import { FinalGradesComponent } from './components/final-grades/final-grades.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
         path: 'tasks/:taskId/:courseId/grades',
         component: UpdateGradesComponent,
       },
+      { path: 'grades', component: FinalGradesComponent },
     ],
   },
   { path: '**', component: PageNotFoundComponent },
