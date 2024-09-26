@@ -97,5 +97,24 @@ namespace GradeMasterApp.Repositories
             }
         }
 
+        // Get a list of students who have submitted an assignment with the given AssignmentId.
+        public async Task<List<Student>> GetStudentsByAssignmentIdAsync(string assignmentId)
+        {
+            var filter = Builders<Student>.Filter.ElemMatch(s => s.AssignmentsSubmissions, sub => sub.AssignmentId == assignmentId);
+            return await _studentsCollection.Find(filter).ToListAsync();
+        }
+
+        // Remove submissions from a student
+        public async Task RemoveAssignmentSubmissionFromStudentsAsync(string assignmentId)
+        {
+            var filter = Builders<Student>.Filter.ElemMatch(s => s.AssignmentsSubmissions, sub => sub.AssignmentId == assignmentId);
+
+            var update = Builders<Student>.Update.PullFilter(
+                s => s.AssignmentsSubmissions,
+                sub => sub.AssignmentId == assignmentId
+            );
+
+            await _studentsCollection.UpdateManyAsync(filter, update);
+        }
     }
 }

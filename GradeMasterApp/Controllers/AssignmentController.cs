@@ -12,11 +12,13 @@ namespace GradeMasterApp.Controllers
     {
         private readonly AssignmentRepository _assignmentRepository;
         private readonly CourseRepository _courseRepository;
+        private readonly StudentRepository _studentRepository;
 
-        public AssignmentController(AssignmentRepository assignmentRepository, CourseRepository courseRepository)
+        public AssignmentController(AssignmentRepository assignmentRepository, CourseRepository courseRepository, StudentRepository studentRepository)
         {
             _assignmentRepository = assignmentRepository;
             _courseRepository = courseRepository;
+            _studentRepository = studentRepository;
         }
 
         [HttpPost("add-new-assignment")]
@@ -105,12 +107,31 @@ namespace GradeMasterApp.Controllers
                 return NotFound("Course not found.");
             }
 
+            // Remove assignment from the course
             course.Assignments.Remove(assignmentId);
             await _courseRepository.UpdateCourseAsync(course);
 
-            await _assignmentRepository.DeleteAssignmentAsync(assignmentId);
+            var tasks = new List<Task>();
+
+            var studentsWithSubmission = await _studentRepository.GetStudentsByAssignmentIdAsync(assignmentId);
+
+            foreach (var student in studentsWithSubmission)
+            {
+                tasks.Add(RemoveAssignmentSubmissionFromStudentAsync(student, assignmentId));
+            }
+
+            tasks.Add(_assignmentRepository.DeleteAssignmentAsync(assignmentId));
+
+            await Task.WhenAll(tasks);
 
             return Ok(new { Message = "Assignment deleted successfully" });
+        }
+
+        private async Task RemoveAssignmentSubmissionFromStudentAsync(Student student, string assignmentId)
+        {
+            student.AssignmentsSubmissions.RemoveAll(sub => sub.AssignmentId == assignmentId);
+
+            await _studentRepository.UpdateStudentAsync(student);
         }
     }
 }

@@ -48,44 +48,54 @@ namespace GradeMasterApp.Controllers
 
             await _courseRepository.AddCourseAsync(course);
 
+            var tasks = new List<Task>();
+
             // Enroll each student
             foreach (var studentDto in courseDto.Students)
             {
-                // Find the student by StudentId or create a new one if not found
-                var student = await _studentRepository.GetStudentByStudentIdAsync(studentDto.StudentId)
-                              ?? new Student
-                              {
-                                  FirstName = studentDto.FirstName,
-                                  LastName = studentDto.LastName,
-                                  StudentId = studentDto.StudentId
-                              };
-
-                if (student.Id == null)
-                {
-                    await _studentRepository.AddStudentAsync(student);
-                }
-
-                // Create the enrollment
-                var enrollment = new Enrollment
-                {
-                    CourseId = course.Id,
-                    StudentId = student.Id,
-                    EnrollmentDate = DateTime.UtcNow
-                };
-
-                await _enrollmentRepository.AddEnrollmentAsync(enrollment);
-
-                // Update student's enrollments
-                student.Enrollments.Add(enrollment.Id);
-                await _studentRepository.UpdateStudentAsync(student);
-
-                course.Enrollments.Add(enrollment.Id);
+                tasks.Add(EnrollStudentAsync(studentDto, course));
             }
+
+            await Task.WhenAll(tasks);
 
             await _courseRepository.UpdateCourseAsync(course);
 
             return Ok(new { Message = "Course created successfully" });
         }
+
+        private async Task EnrollStudentAsync(StudentDTO studentDto, Course course)
+        {
+            // Find the student by StudentId or create a new one if not found
+            var student = await _studentRepository.GetStudentByStudentIdAsync(studentDto.StudentId)
+                          ?? new Student
+                          {
+                              FirstName = studentDto.FirstName,
+                              LastName = studentDto.LastName,
+                              StudentId = studentDto.StudentId
+                          };
+
+            if (student.Id == null)
+            {
+                await _studentRepository.AddStudentAsync(student);
+            }
+
+            // Create the enrollment
+            var enrollment = new Enrollment
+            {
+                CourseId = course.Id,
+                StudentId = student.Id,
+                EnrollmentDate = DateTime.UtcNow
+            };
+
+            await _enrollmentRepository.AddEnrollmentAsync(enrollment);
+
+            // Update student's enrollments
+            student.Enrollments.Add(enrollment.Id);
+            await _studentRepository.UpdateStudentAsync(student);
+
+            course.Enrollments.Add(enrollment.Id);
+        }
+
 
         // Get a specific course by ID
         [HttpGet("get-course/{id}")]
@@ -168,38 +178,48 @@ namespace GradeMasterApp.Controllers
         [HttpDelete("delete-course/{id}")]
         public async Task<IActionResult> DeleteCourse(string id)
         {
-            var course = await _courseRepository.GetCourseByIdAsync(id);
+            var course = await _courseRepository.GetCourseByIdAsync(id).ConfigureAwait(false);
             if (course == null)
             {
                 return NotFound("Course not found.");
             }
 
+            var tasks = new List<Task>();
+
             foreach (var enrollmentId in course.Enrollments)
             {
-                var enrollment = await _enrollmentRepository.GetEnrollmentByIdAsync(enrollmentId);
-                if (enrollment != null)
-                {
-                    var student = await _studentRepository.GetStudentByIdAsync(enrollment.StudentId);
-                    if (student != null)
-                    {
-                        student.Enrollments.Remove(enrollmentId);
-
-                        student.Attendances.RemoveAll(a => a.CourseId == id);
-
-                        await _studentRepository.UpdateStudentAsync(student);
-                    }
-                }
-                await _enrollmentRepository.DeleteEnrollmentAsync(enrollmentId);
+                tasks.Add(DeleteEnrollmentAndUpdateStudentAsync(enrollmentId, course.Assignments, id));
             }
 
             foreach (var assignmentId in course.Assignments)
             {
-                await _assignmentRepository.DeleteAssignmentAsync(assignmentId).ConfigureAwait(false);
+                tasks.Add(_assignmentRepository.DeleteAssignmentAsync(assignmentId));
             }
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
             await _courseRepository.DeleteCourseAsync(id).ConfigureAwait(false);
 
             return Ok(new { Message = "Course deleted successfully" });
+        }
+
+        private async Task DeleteEnrollmentAndUpdateStudentAsync(string enrollmentId, List<string> assignmentIds, string courseId)
+        {
+            var enrollment = await _enrollmentRepository.GetEnrollmentByIdAsync(enrollmentId).ConfigureAwait(false);
+            if (enrollment != null)
+            {
+                var student = await _studentRepository.GetStudentByIdAsync(enrollment.StudentId).ConfigureAwait(false);
+                if (student != null)
+                {
+                    student.Enrollments.Remove(enrollmentId);
+                    student.Attendances.RemoveAll(a => a.CourseId == courseId);
+
+                    student.AssignmentsSubmissions.RemoveAll(sub => assignmentIds.Contains(sub.AssignmentId));
+
+                    await _studentRepository.UpdateStudentAsync(student).ConfigureAwait(false);
+                }
+                await _enrollmentRepository.DeleteEnrollmentAsync(enrollmentId).ConfigureAwait(false);
+            }
         }
 
         // Get all courses for a specific teacher
