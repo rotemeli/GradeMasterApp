@@ -45,6 +45,9 @@ export class CoursesComponent implements OnInit {
               courseName: course.courseName,
               description: course.description,
               numberOfLectures: course.numberOfLectures,
+              assignmentWeight: course.assignmentWeight,
+              finalExamWeight: course.finalExamWeight,
+              finalExam: course.finalExam ?? null,
             };
           });
         },

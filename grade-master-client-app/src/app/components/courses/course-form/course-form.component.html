@@ -55,6 +55,49 @@
     </mat-error>
   </mat-form-field>
 
+  <!-- Assignment Weight Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Assignments Weight (%)</mat-label>
+    <mat-icon matPrefix>bar_chart</mat-icon>
+    <input
+      matInput
+      type="number"
+      placeholder="Assignments Weight"
+      name="assignmentsWeight"
+      formControlName="assignmentsWeight"
+    />
+    <mat-error *ngIf="courseForm.get('assignmentsWeight')?.hasError">
+      Assignment weight is required and must be between 0 and 100.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Final Exam Weight Field -->
+  <mat-form-field appearance="outline">
+    <mat-label>Final Exam Weight (%)</mat-label>
+    <mat-icon matPrefix>assessment</mat-icon>
+    <input
+      matInput
+      type="number"
+      placeholder="Final Exam Weight"
+      name="finalExamWeight"
+      formControlName="finalExamWeight"
+    />
+    <mat-error *ngIf="courseForm.get('finalExamWeight')?.hasError">
+      Final Exam weight is required and must be between 0 and 100.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Error for total weight validation -->
+  <mat-error
+    *ngIf="
+      courseForm.hasError('weightMismatch') &&
+      courseForm.get('assignmentsWeight')?.touched &&
+      courseForm.get('finalExamWeight')?.touched
+    "
+  >
+    Total weight for assignments and the final exam must equal 100%.
+  </mat-error>
+
   <!-- CSV Upload Field -->
   <div *ngIf="!isEditMode" fxLayout="column" fxLayoutGap="8px">
     <mat-label class="upload-students-label">

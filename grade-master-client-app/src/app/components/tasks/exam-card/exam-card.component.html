@@ -1,0 +1,36 @@
+<div class="card-container">
+  <mat-card class="exam-card">
+    <mat-card-header>
+      <mat-card-title>{{ exam?.title }}</mat-card-title>
+      <mat-card-subtitle>
+        Exam Date: {{ exam?.examDate | date : 'mediumDate' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-actions class="card-actions">
+      <button
+        mat-raised-button
+        aria-label="update-exam"
+        (click)="onUpdateExam(exam?.id)"
+      >
+        <mat-icon>grading</mat-icon>
+        Update Exam
+      </button>
+      <button mat-button aria-label="edit" (click)="onEditExam(exam)">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+      <ng-container *ngIf="exam && !isDeleting[exam.id]; else deleting">
+        <button mat-button aria-label="delete" (click)="onDeleteExam(exam.id)">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </ng-container>
+      <ng-template #deleting>
+        <button mat-button disabled>
+          <mat-spinner diameter="20"></mat-spinner>
+        </button>
+      </ng-template>
+    </mat-card-actions>
+  </mat-card>
+</div>

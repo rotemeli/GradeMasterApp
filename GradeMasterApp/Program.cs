@@ -23,6 +23,7 @@ builder.Services.AddScoped<EnrollmentRepository>();
 builder.Services.AddScoped<StudentRepository>();
 builder.Services.AddScoped<AttendanceRepository>();
 builder.Services.AddScoped<AssignmentRepository>();
+builder.Services.AddScoped<ExamRepository>();
 
 // Add services to the container.
 

@@ -47,6 +47,8 @@ import { AssignmentsListComponent } from './components/tasks/assignments-list/as
 import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
 import { FormCardComponent } from './components/dialogs/form-card/form-card.component';
 import { UploadGradesComponent } from './components/tasks/update-grades/upload-grades/upload-grades.component';
+import { ExamFormComponent } from './components/tasks/exam-form/exam-form.component';
+import { ExamCardComponent } from './components/tasks/exam-card/exam-card.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { UploadGradesComponent } from './components/tasks/update-grades/upload-g
     UpdateGradesComponent,
     FormCardComponent,
     UploadGradesComponent,
+    ExamFormComponent,
+    ExamCardComponent,
   ],
   imports: [
     BrowserModule,

@@ -43,7 +43,9 @@ namespace GradeMasterApp.Controllers
                 TeacherId = courseDto.TeacherId,
                 CourseName = courseDto.CourseName,
                 Description = courseDto.Description,
-                NumberOfLectures = courseDto.NumberOfLectures
+                NumberOfLectures = courseDto.NumberOfLectures,
+                AssignmentWeight = courseDto.AssignmentsWeight,
+                FinalExamWeight = courseDto.FinalExamWeight
             };
 
             await _courseRepository.AddCourseAsync(course);
@@ -168,6 +170,8 @@ namespace GradeMasterApp.Controllers
             course.CourseName = courseDto.CourseName;
             course.Description = courseDto.Description;
             course.NumberOfLectures = courseDto.NumberOfLectures;
+            course.AssignmentWeight = courseDto.AssignmentsWeight;
+            course.FinalExamWeight = courseDto.FinalExamWeight;
 
             await _courseRepository.UpdateCourseAsync(course);
 

@@ -4,4 +4,6 @@ export interface ICourseData {
   numberOfLectures: number;
   teacherId?: string;
   students: any[];
+  assignmentsWeight: number;
+  finalExamWeight: number;
 }
