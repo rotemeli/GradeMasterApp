@@ -31,3 +31,8 @@ export interface IFinalGradeData {
   courseId: string;
   finalGradeValue: number;
 }
+
+export interface IStudentFinalGrade {
+  studentName: string;
+  finalGradeValue: number;
+}

@@ -1,4 +1,5 @@
-﻿using GradeMasterApp.Models;
+﻿using GradeMasterApp.DTOs;
+using GradeMasterApp.Models;
 using GradeMasterApp.Services;
 using MongoDB.Driver;
 
@@ -146,5 +147,21 @@ namespace GradeMasterApp.Repositories
             }
         }
 
+        // Get students final grades for a specific course
+        public async Task<List<StudentFinalGradeDTO>> GetFinalGradesByCourseIdAsync(string courseId)
+        {
+            var filter = Builders<Student>.Filter.ElemMatch(s => s.FinalGrades, fg => fg.CourseId == courseId);
+            var students = await _studentsCollection.Find(filter).ToListAsync();
+
+            // Create a list of Dto that includes both the student's name and final grade
+            var finalGradesList = students.Select(student => new StudentFinalGradeDTO
+            {
+                StudentName = $"{student.FirstName} {student.LastName}",
+                FinalGradeValue = student.FinalGrades
+                    .FirstOrDefault(fg => fg.CourseId == courseId)?.FinalGradeValue ?? 0
+            }).ToList();
+
+            return finalGradesList;
+        }
     }
 }

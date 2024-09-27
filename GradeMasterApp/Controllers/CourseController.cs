@@ -15,17 +15,20 @@ namespace GradeMasterApp.Controllers
         private readonly EnrollmentRepository _enrollmentRepository;
         private readonly StudentRepository _studentRepository;
         private readonly AssignmentRepository _assignmentRepository;
+        private readonly ExamRepository _examRepository;
 
         public CourseController(
             CourseRepository courseRepository,
             EnrollmentRepository enrollmentRepository,
             StudentRepository studentRepository,
-            AssignmentRepository assignmentRepository)
+            AssignmentRepository assignmentRepository,
+            ExamRepository examRepository)
         {
             _courseRepository = courseRepository;
             _enrollmentRepository = enrollmentRepository;
             _studentRepository = studentRepository;
             _assignmentRepository = assignmentRepository;
+            _examRepository = examRepository;
         }
 
         // Create a new course and enroll students
@@ -200,11 +203,23 @@ namespace GradeMasterApp.Controllers
                 tasks.Add(_assignmentRepository.DeleteAssignmentAsync(assignmentId));
             }
 
+            tasks.Add(DeleteExamsByCourseIdAsync(id));
+
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
             await _courseRepository.DeleteCourseAsync(id).ConfigureAwait(false);
 
             return Ok(new { Message = "Course deleted successfully" });
+        }
+
+        // Deletes exams that have the given courseId
+        private async Task DeleteExamsByCourseIdAsync(string courseId)
+        {
+            var exams = await _examRepository.GetExamsByCourseIdAsync(courseId).ConfigureAwait(false);
+            foreach (var exam in exams)
+            {
+                await _examRepository.DeleteExamAsync(exam.Id).ConfigureAwait(false);
+            }
         }
 
         private async Task DeleteEnrollmentAndUpdateStudentAsync(string enrollmentId, List<string> assignmentIds, string courseId)
@@ -219,6 +234,8 @@ namespace GradeMasterApp.Controllers
                     student.Attendances.RemoveAll(a => a.CourseId == courseId);
 
                     student.AssignmentsSubmissions.RemoveAll(sub => assignmentIds.Contains(sub.AssignmentId));
+
+                    student.FinalGrades.RemoveAll(fg => fg.CourseId == courseId);
 
                     await _studentRepository.UpdateStudentAsync(student).ConfigureAwait(false);
                 }

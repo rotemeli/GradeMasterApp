@@ -13,4 +13,8 @@ export class GradesService {
   updateGrades(gradesData: any): Observable<any> {
     return this._http.post(this.baseUrl + 'update-grades', gradesData);
   }
+
+  getFinalGradesByCourseId(courseId: string): Observable<any> {
+    return this._http.get(this.baseUrl + `course-final-grades/${courseId}`);
+  }
 }

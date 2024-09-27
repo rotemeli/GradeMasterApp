@@ -1,0 +1,56 @@
+<div class="main-container" fxLayout="column" fxLayoutGap="4px">
+  <app-course-select
+    (courseSelected)="onCourseSelected($event)"
+    (coursesLoaded)="onCoursesLoaded($event)"
+  >
+  </app-course-select>
+
+  <h5 *ngIf="!selectedCourse" fxLayoutAlign="center center">
+    * Select a course to view final grades statistics
+  </h5>
+
+  <div *ngIf="courses.length > 0; else noCoursesTemplate">
+    <h2 class="chart-title" *ngIf="selectedCourse">
+      {{ selectedCourse.courseName }} - Final Grades Statistics
+    </h2>
+
+    <div *ngIf="averageGrade !== null" class="course-average">
+      <strong>Average Grade:</strong> {{ averageGrade | number : '1.1-1' }}
+    </div>
+
+    <div
+      *ngIf="finalGradesData.length > 0; else noGradesTemplate"
+      class="chart-container"
+    >
+      <ngx-charts-bar-vertical
+        [view]="[1200, 600]"
+        [results]="finalGradesData"
+        [scheme]="colorScheme"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="false"
+        [xAxisLabel]="'Student'"
+        [yAxisLabel]="'Final Grade'"
+        [showDataLabel]="true"
+        [roundDomains]="true"
+        [rotateXAxisTicks]="true"
+        [barPadding]="15"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
+
+    <!-- No Grades Template -->
+    <ng-template #noGradesTemplate>
+      <h5 *ngIf="selectedCourse && !isLoading" fxLayoutAlign="center center">
+        * No final grades available for this course.
+      </h5>
+    </ng-template>
+  </div>
+
+  <!-- No Courses Template -->
+  <ng-template #noCoursesTemplate>
+    <h5 fxLayoutAlign="center center">
+      * No courses available. Please create a course first.
+    </h5>
+  </ng-template>
+</div>

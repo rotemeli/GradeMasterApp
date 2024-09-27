@@ -45,6 +45,7 @@ namespace GradeMasterApp.Controllers
             await _examRepository.AddExamAsync(exam);
 
             course.FinalExam = exam;
+            course.Assignments.Add(exam.Id);
             await _courseRepository.UpdateCourseAsync(course);
 
             return Ok(exam);

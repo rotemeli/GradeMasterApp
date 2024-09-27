@@ -60,5 +60,17 @@ namespace GradeMasterApp.Controllers
             await _studentRepository.AddOrUpdateAssignmentSubmissionAsync(student.Id, submission).ConfigureAwait(false);
         }
 
+        [HttpGet("course-final-grades/{courseId}")]
+        public async Task<IActionResult> GetCourseFinalGrades(string courseId)
+        {
+            var finalGrades = await _studentRepository.GetFinalGradesByCourseIdAsync(courseId);
+
+            if (finalGrades == null || !finalGrades.Any())
+            {
+                return NotFound($"No final grades found for course with ID {courseId}.");
+            }
+
+            return Ok(finalGrades);
+        }
     }
 }
