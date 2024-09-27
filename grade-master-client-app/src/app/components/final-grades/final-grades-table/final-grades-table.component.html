@@ -42,8 +42,12 @@
     </table>
   </section>
 
-  <!-- Submit Button -->
-  <div fxLayoutAlign="center center" class="submit-final-grades-container">
+  <div
+    fxLayoutAlign="center center"
+    fxLayoutGap="16px"
+    class="submit-final-grades-container"
+  >
+    <!-- Submit Button -->
     <button
       mat-fab
       extended
@@ -55,6 +59,11 @@
         <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
         <span>{{ isLoading ? 'Submitting...' : 'Submit Final Grades' }}</span>
       </div>
+    </button>
+
+    <!-- Export Final Grades Button -->
+    <button mat-fab extended (click)="exportToCSV()">
+      <mat-icon>file_download</mat-icon> Export Final Grades to CSV
     </button>
   </div>
 </div>

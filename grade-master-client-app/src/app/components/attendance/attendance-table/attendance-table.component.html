@@ -35,10 +35,20 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </section>
-  <div *ngIf="!isLoading" class="submit-container" fxLayoutAlign="end">
-    <button mat-raised-button (click)="onSubmit()">
-      <mat-icon>check_circle</mat-icon>
-      Submit Attendance
+
+  <!-- Export and Submit Buttons -->
+  <div
+    *ngIf="!isLoading"
+    class="submit-container"
+    fxLayoutGap="16px"
+    fxLayoutAlign="end"
+  >
+    <button mat-raised-button color="primary" (click)="exportToCSV()">
+      <mat-icon>file_download</mat-icon> Export to CSV
+    </button>
+
+    <button mat-raised-button color="accent" (click)="onSubmit()">
+      <mat-icon>check_circle</mat-icon> Submit Attendance
     </button>
   </div>
 </div>
