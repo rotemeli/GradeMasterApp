@@ -36,7 +36,10 @@
     </table>
   </section>
   <div *ngIf="!isLoading" class="submit-container" fxLayoutAlign="end">
-    <button mat-raised-button (click)="onSubmit()">Submit Attendance</button>
+    <button mat-raised-button (click)="onSubmit()">
+      <mat-icon>check_circle</mat-icon>
+      Submit Attendance
+    </button>
   </div>
 </div>
 <div
