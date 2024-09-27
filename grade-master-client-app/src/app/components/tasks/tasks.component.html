@@ -2,16 +2,22 @@
   <app-course-select
     (coursesLoaded)="onCoursesLoaded($event)"
     (courseSelected)="onCourseSelected($event)"
+    (loading)="onLoading($event)"
   >
   </app-course-select>
   <h5 fxLayoutAlign="center center">Course Tasks Management</h5>
-  <div
-    *ngIf="!isLoading && !selectedCourse"
-    fxLayout="column"
-    fxLayoutAlign="center center"
-  >
-    <h5>* Select a course to view and manage tasks</h5>
+  <div *ngIf="courses.length; else noCoursesTemplate">
+    <h5 *ngIf="!selectedCourse" fxLayoutAlign="center center">
+      * Select a course to view the attendance report
+    </h5>
   </div>
+  <ng-template #noCoursesTemplate>
+    <h5 *ngIf="!isLoading" fxLayoutAlign="center center">
+      You don't have any courses yet. Please go to the
+      <a routerLink="/courses">&nbsp;Courses&nbsp;</a>
+      page to create a new course.
+    </h5>
+  </ng-template>
   <div
     *ngIf="!isLoading && selectedCourse"
     class="tasks-container"

@@ -16,7 +16,7 @@ export class StatisticsComponent {
   courses: Course[] = [];
   selectedCourse: Course | undefined;
   finalGradesData: any[] = [];
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   averageGrade: number | null = null;
 
   // Chart colors
@@ -41,6 +41,10 @@ export class StatisticsComponent {
     } else {
       this.finalGradesData = [];
     }
+  }
+
+  onLoading(event: boolean) {
+    this.isLoading = event;
   }
 
   loadCourseFinalGrades(courseId: string): void {

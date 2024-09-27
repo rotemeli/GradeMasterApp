@@ -2,24 +2,23 @@
   <app-course-select
     (courseSelected)="onCourseSelected($event)"
     (coursesLoaded)="onCoursesLoaded($event)"
+    (loading)="onLoading($event)"
   >
   </app-course-select>
   <h5 fxLayoutAlign="center center">Students Attendance Report</h5>
   <div fxLayout="column" fxLayoutGap="10px">
-    <div *ngIf="!isLoading">
-      <div *ngIf="courses.length; else noCoursesTemplate">
-        <h5 *ngIf="!selectedCourse" fxLayoutAlign="center center">
-          * Select a course to view the attendance report
-        </h5>
-      </div>
-      <ng-template #noCoursesTemplate>
-        <h5>
-          You don't have any courses yet. Please go to the
-          <a routerLink="/courses">&nbsp;Courses&nbsp;</a>
-          page to create a new course.
-        </h5>
-      </ng-template>
+    <div *ngIf="courses.length; else noCoursesTemplate">
+      <h5 *ngIf="!selectedCourse" fxLayoutAlign="center center">
+        * Select a course to view the attendance report
+      </h5>
     </div>
+    <ng-template #noCoursesTemplate>
+      <h5 *ngIf="!isLoading" fxLayoutAlign="center center">
+        You don't have any courses yet. Please go to the
+        <a routerLink="/courses">&nbsp;Courses&nbsp;</a>
+        page to create a new course.
+      </h5>
+    </ng-template>
     <app-attendance-table
       *ngIf="selectedCourse"
       class="attendance-table"

@@ -13,10 +13,13 @@ export class FinalGradesComponent {
 
   onCoursesLoaded(courses: Course[]) {
     this.courses = courses;
-    this.isLoading = false;
   }
 
   onCourseSelected(course: Course | undefined) {
     this.selectedCourse = course;
+  }
+
+  onLoading(event: boolean) {
+    this.isLoading = event;
   }
 }

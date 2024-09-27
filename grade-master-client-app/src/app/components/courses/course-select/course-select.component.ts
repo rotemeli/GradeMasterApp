@@ -19,6 +19,7 @@ export class CourseSelectComponent {
 
   @Output() courseSelected = new EventEmitter<Course | undefined>();
   @Output() coursesLoaded = new EventEmitter<Course[]>();
+  @Output() loading: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     private _accountSvc: AccountService,
@@ -40,6 +41,7 @@ export class CourseSelectComponent {
 
     if (!teacherId) {
       this.isLoading = false;
+      this.loading.emit(false);
       return;
     }
 
@@ -51,10 +53,12 @@ export class CourseSelectComponent {
           this.courses = res;
           this.coursesLoaded.emit(this.courses);
           this.isLoading = false;
+          this.loading.emit(false);
         },
         error: (err) => {
           console.error(err);
           this.isLoading = false;
+          this.loading.emit(false);
         },
       });
   }

@@ -2,6 +2,7 @@
   <app-course-select
     (courseSelected)="onCourseSelected($event)"
     (coursesLoaded)="onCoursesLoaded($event)"
+    (loading)="onLoading($event)"
   >
   </app-course-select>
   <h5 fxLayoutAlign="center center">Students Final Grades</h5>
@@ -21,7 +22,7 @@
         </h5>
       </div>
       <ng-template #noCoursesTemplate>
-        <h5>
+        <h5 fxLayoutAlign="center center">
           You don't have any courses yet. Please go to the
           <a routerLink="/courses">&nbsp;Courses&nbsp;</a>
           page to create a new course.

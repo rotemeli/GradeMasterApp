@@ -37,7 +37,6 @@ export class TasksComponent implements OnInit {
 
   onCoursesLoaded(courses: Course[]) {
     this.courses = courses;
-    this.isLoading = false;
   }
 
   onCourseSelected(course: Course | undefined) {
@@ -49,6 +48,10 @@ export class TasksComponent implements OnInit {
       this.assignments = [];
       this.exam = null;
     }
+  }
+
+  onLoading(event: boolean) {
+    this.isLoading = event;
   }
 
   openAssignmentForm(assignment: Assignment | null = null) {
