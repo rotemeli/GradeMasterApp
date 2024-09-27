@@ -156,4 +156,45 @@ export class FinalGradesTableComponent {
         },
       });
   }
+
+  exportToCSV(): void {
+    if (!this.dataSource.length) {
+      return;
+    }
+
+    const csvRows: string[] = [];
+
+    const headers = [
+      'Student ID',
+      'Name',
+      `Assignments Avg. (${this.course?.assignmentWeight}%)`,
+      `Final Exam (${this.course?.finalExamWeight}%)`,
+      'Final Grade',
+    ];
+    csvRows.push(headers.join(','));
+
+    // Add student data for each row
+    this.dataSource.forEach((student) => {
+      const row = [
+        student.id,
+        student.name,
+        student.assignmentsAverage,
+        student.finalExamGrade,
+        student.finalGrade,
+      ];
+      csvRows.push(row.join(','));
+    });
+
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `${this.course?.courseName}_final_grades.csv`);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 }
