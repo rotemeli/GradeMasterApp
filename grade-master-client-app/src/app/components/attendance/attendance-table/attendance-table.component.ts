@@ -31,6 +31,7 @@ export class AttendanceTableComponent implements OnChanges {
   ];
 
   isLoading!: boolean;
+  isExporting: boolean = false;
 
   constructor(
     private _studentSvc: StudentService,
@@ -150,12 +151,64 @@ export class AttendanceTableComponent implements OnChanges {
       .subscribe({
         next: (res) => {
           this.isLoading = false;
-          this._toastr.success(res.message);
+          if (!this.isExporting) this._toastr.success(res.message);
+          this.isExporting = false;
         },
         error: (err) => {
           this.isLoading = false;
+          this.isExporting = false;
           console.log(err);
         },
       });
+  }
+
+  exportToCSV(): void {
+    if (!this.dataSource.length || !this.course) {
+      return;
+    }
+    this.isExporting = true;
+    this.onSubmit();
+
+    const csvRows: string[] = [];
+
+    const headers = ['Id', 'Name', ...this.lectures];
+    csvRows.push(headers.join(','));
+
+    // Add student data for each row
+    this.dataSource.forEach((student: any) => {
+      const row = [
+        student.id,
+        student.name,
+        ...this.lectures.map((lecture) =>
+          this.getAttendanceDisplayValue(student.attendance[lecture])
+        ),
+      ];
+      csvRows.push(row.join(','));
+    });
+
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `${this.course?.courseName}_attendance.csv`);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  getAttendanceDisplayValue(status: EAttendanceStatus): string {
+    switch (status) {
+      case EAttendanceStatus.Present:
+        return 'Present';
+      case EAttendanceStatus.Absent:
+        return 'Absent';
+      case EAttendanceStatus.Late:
+        return 'Late';
+      default:
+        return 'Not Set';
+    }
   }
 }
