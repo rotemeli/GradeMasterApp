@@ -19,7 +19,7 @@ export class StatisticsComponent {
   isLoading: boolean = false;
   averageGrade: number | null = null;
 
-  // Improved Chart configuration with custom colors
+  // Chart colors
   colorScheme: Color = {
     name: 'custom',
     selectable: true,
@@ -29,16 +29,10 @@ export class StatisticsComponent {
 
   constructor(private _gradesSvc: GradesService) {}
 
-  ngOnInit(): void {
-    // Initialization if needed
-  }
-
-  // Called when courses are loaded
   onCoursesLoaded(courses: Course[]): void {
     this.courses = courses;
   }
 
-  // Triggered when a course is selected
   onCourseSelected(course: Course | undefined): void {
     this.selectedCourse = course;
     if (this.selectedCourse) {
@@ -63,7 +57,7 @@ export class StatisticsComponent {
               name: grade.studentName,
               value: grade.finalGradeValue,
             }));
-            this.calculateCourseAverage(grades); // Calculate average here
+            this.calculateCourseAverage(grades);
           }
           this.isLoading = false;
         },
