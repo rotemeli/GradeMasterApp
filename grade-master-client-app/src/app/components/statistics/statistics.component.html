@@ -41,9 +41,18 @@
 
     <!-- No Grades Template -->
     <ng-template #noGradesTemplate>
-      <h5 *ngIf="selectedCourse && !isLoading" fxLayoutAlign="center center">
-        * No final grades available for this course.
-      </h5>
+      <div
+        *ngIf="selectedCourse && !isLoading"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+      >
+        <h5>* No final grades available for this course.</h5>
+        <h5>
+          Please go to the
+          <a routerLink="/grades">&nbsp;Final Grades&nbsp;</a>
+          page and submit final grades.
+        </h5>
+      </div>
     </ng-template>
   </div>
 
