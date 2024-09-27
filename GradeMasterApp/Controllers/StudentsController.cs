@@ -132,5 +132,33 @@ namespace GradeMasterApp.Controllers
 
             return Ok(new { Message = "Student removed from course successfully." });
         }
+
+        [HttpPost("final-grade")]
+        public async Task<IActionResult> StoreFinalGrades([FromBody] List<FinalGradeDTO> finalGradesDto)
+        {
+            if (finalGradesDto == null || finalGradesDto.Any(fg => fg.FinalGradeValue < 0 || fg.FinalGradeValue > 100))
+            {
+                return BadRequest("Invalid final grade data.");
+            }
+
+            try
+            {
+                var tasks = new List<Task>();
+
+                foreach (var finalGrade in finalGradesDto)
+                {
+                    tasks.Add(_studentRepository.AddOrUpdateFinalGradeAsync(finalGrade.StudentId, finalGrade.CourseId, finalGrade.FinalGradeValue));
+                }
+
+                await Task.WhenAll(tasks);
+
+                return Ok(new { message = "Final grades stored successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // Handle exceptions
+            }
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IStudentData } from '../models/student.model';
+import { IFinalGradeData, IStudentData } from '../models/student.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +25,9 @@ export class StudentService {
     return this._http.delete(
       this.baseUrl + `remove-student-from-course/${courseId}/${studentId}`
     );
+  }
+
+  submitFinalGrades(finalGradesData: IFinalGradeData[]): Observable<any> {
+    return this._http.post(this.baseUrl + 'final-grade', finalGradesData);
   }
 }

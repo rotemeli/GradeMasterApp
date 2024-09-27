@@ -74,7 +74,14 @@ export class CourseFormComponent implements OnInit {
     // For Edit Mode
     if (this.data && this.data.course) {
       this.isEditMode = true;
-      this.courseForm.patchValue(this.data.course);
+      const formData = {
+        courseName: this.data.course.courseName,
+        description: this.data.course.description,
+        numberOfLectures: this.data.course.numberOfLectures,
+        assignmentsWeight: this.data.course.assignmentWeight,
+        finalExamWeight: this.data.course.finalExamWeight,
+      };
+      this.courseForm.patchValue(formData);
     }
   }
 

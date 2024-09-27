@@ -11,6 +11,14 @@
         <h5 *ngIf="!selectedCourse" fxLayoutAlign="center center">
           * Select a course to view the students final grades
         </h5>
+        <h5
+          *ngIf="selectedCourse && !selectedCourse.finalExam"
+          fxLayoutAlign="center center"
+        >
+          * This course does not have a final exam. Please go to the
+          <a [routerLink]="['/tasks']">&nbsp;tasks page&nbsp;</a>
+          to create one.
+        </h5>
       </div>
       <ng-template #noCoursesTemplate>
         <h5>
@@ -20,5 +28,10 @@
         </h5>
       </ng-template>
     </div>
+    <app-final-grades-table
+      *ngIf="selectedCourse"
+      class="final-grades-table"
+      [course]="selectedCourse"
+    ></app-final-grades-table>
   </div>
 </div>
