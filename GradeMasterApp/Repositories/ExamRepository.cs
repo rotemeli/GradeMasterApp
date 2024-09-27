@@ -26,7 +26,7 @@ namespace GradeMasterApp.Repositories
             return await _examsCollection.Find(filter).FirstOrDefaultAsync();
         }
 
-        // Get an exam by its ID
+        // Get an exam by examId
         public async Task<Exam> GetExamByIdAsync(string examId)
         {
             return await _examsCollection.Find(e => e.Id == examId).FirstOrDefaultAsync();
@@ -39,11 +39,18 @@ namespace GradeMasterApp.Repositories
             await _examsCollection.ReplaceOneAsync(filter, exam);
         }
 
-        // Delete an exam by its ID
+        // Delete an exam by examId
         public async Task DeleteExamAsync(string examId)
         {
             var filter = Builders<Exam>.Filter.Eq(ex => ex.Id, examId);
             await _examsCollection.DeleteOneAsync(filter);
+        }
+
+        // Get all exams by courseId
+        public async Task<List<Exam>> GetExamsByCourseIdAsync(string courseId)
+        {
+            var filter = Builders<Exam>.Filter.Eq(e => e.CourseId, courseId);
+            return await _examsCollection.Find(filter).ToListAsync();
         }
     }
 }

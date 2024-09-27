@@ -11,6 +11,7 @@ import { CourseDetailsComponent } from './components/courses/course-details/cour
 import { TasksComponent } from './components/tasks/tasks.component';
 import { UpdateGradesComponent } from './components/tasks/update-grades/update-grades.component';
 import { FinalGradesComponent } from './components/final-grades/final-grades.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
         component: UpdateGradesComponent,
       },
       { path: 'grades', component: FinalGradesComponent },
+      { path: 'statistics', component: StatisticsComponent },
     ],
   },
   { path: '**', component: PageNotFoundComponent },

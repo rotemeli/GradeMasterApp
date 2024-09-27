@@ -51,6 +51,9 @@ import { ExamFormComponent } from './components/tasks/exam-form/exam-form.compon
 import { ExamCardComponent } from './components/tasks/exam-card/exam-card.component';
 import { FinalGradesComponent } from './components/final-grades/final-grades.component';
 import { FinalGradesTableComponent } from './components/final-grades/final-grades-table/final-grades-table.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -77,6 +80,7 @@ import { FinalGradesTableComponent } from './components/final-grades/final-grade
     ExamCardComponent,
     FinalGradesComponent,
     FinalGradesTableComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +106,9 @@ import { FinalGradesTableComponent } from './components/final-grades/final-grade
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+
+    BrowserAnimationsModule,
+    NgxChartsModule,
 
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
