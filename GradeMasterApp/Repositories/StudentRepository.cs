@@ -116,5 +116,35 @@ namespace GradeMasterApp.Repositories
 
             await _studentsCollection.UpdateManyAsync(filter, update);
         }
+
+        // Add or update final grade for a specific course
+        public async Task AddOrUpdateFinalGradeAsync(long studentId, string courseId, double finalGradeValue)
+        {
+            var filter = Builders<Student>.Filter.Eq(s => s.StudentId, studentId) &
+                         Builders<Student>.Filter.ElemMatch(s => s.FinalGrades, fg => fg.CourseId == courseId);
+
+            var update = Builders<Student>.Update
+                .Set("FinalGrades.$.FinalGradeValue", finalGradeValue)
+                .Set("FinalGrades.$.SubmittedDate", DateTime.Now);
+
+            var result = await _studentsCollection.UpdateOneAsync(filter, update);
+
+            // If no final grade exists, add a new one
+            if (result.MatchedCount == 0)
+            {
+                var pushFinalGrade = Builders<Student>.Update.Push(s => s.FinalGrades, new FinalGrade
+                {
+                    CourseId = courseId,
+                    FinalGradeValue = finalGradeValue,
+                    SubmittedDate = DateTime.Now
+                });
+
+                await _studentsCollection.UpdateOneAsync(
+                    Builders<Student>.Filter.Eq(s => s.StudentId, studentId),
+                    pushFinalGrade
+                );
+            }
+        }
+
     }
 }

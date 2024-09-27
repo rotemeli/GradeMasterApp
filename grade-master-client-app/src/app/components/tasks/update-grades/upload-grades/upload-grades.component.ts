@@ -75,12 +75,12 @@ export class UploadGradesComponent {
       .subscribe({
         next: (res) => {
           this._toastr.success(res.message);
+          this.isLoading.emit(false);
         },
         error: (err) => {
           console.log(err);
           this.isLoading.emit(false);
         },
-        complete: () => this.isLoading.emit(false),
       });
   }
 }

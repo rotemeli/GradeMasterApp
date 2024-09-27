@@ -5,13 +5,10 @@ namespace GradeMasterApp.Models
 {
     public class FinalGrade
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public string CourseId { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string StudentId { get; set; }
+
         public double FinalGradeValue { get; set; }
+        public DateTime SubmittedDate { get; set; } = DateTime.Now;
     }
 }

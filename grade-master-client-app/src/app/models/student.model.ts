@@ -25,3 +25,9 @@ export interface ITaskStudentData {
   studentId: number;
   assignmentSubmission: IAssignmentSubmission;
 }
+
+export interface IFinalGradeData {
+  studentId: number;
+  courseId: string;
+  finalGradeValue: number;
+}

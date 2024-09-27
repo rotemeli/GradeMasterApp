@@ -13,9 +13,9 @@ namespace GradeMasterApp.Models
         public long StudentId { get; set; }
         [BsonRepresentation(BsonType.ObjectId)]
         public List<string> Enrollments { get; set; } = new List<string>();
-        [BsonRepresentation(BsonType.ObjectId)]
-        public List<string> FinalGrades { get; set; } = new List<string>();
+
         public List<StudentAttendance> Attendances { get; set; } = new List<StudentAttendance>();
         public List<AssignmentSubmission> AssignmentsSubmissions { get; set; } = new List<AssignmentSubmission>();
+        public List<FinalGrade> FinalGrades { get; set; } = new List<FinalGrade>();
     }
 }

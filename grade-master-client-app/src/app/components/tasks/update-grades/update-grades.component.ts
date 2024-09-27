@@ -116,12 +116,13 @@ export class UpdateGradesComponent implements OnInit {
         .subscribe({
           next: (response) => {
             student.assignmentSubmission.id = response.id;
+            this.isSubmitting[student.id] = false;
             this._toastr.success('Grade updated successfully');
           },
           error: (err) => {
+            this.isSubmitting[student.id] = false;
             console.log(err);
           },
-          complete: () => (this.isSubmitting[student.id] = false),
         });
     } else {
       this._assignmentSubmissionSvc
@@ -130,11 +131,12 @@ export class UpdateGradesComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this._toastr.success(res.message);
+            this.isSubmitting[student.id] = false;
           },
           error: (err) => {
+            this.isSubmitting[student.id] = false;
             console.log(err);
           },
-          complete: () => (this.isSubmitting[student.id] = false),
         });
     }
   }
