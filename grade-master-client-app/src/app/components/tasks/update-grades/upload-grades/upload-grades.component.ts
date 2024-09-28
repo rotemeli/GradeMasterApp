@@ -79,6 +79,9 @@ export class UploadGradesComponent {
         },
         error: (err) => {
           console.log(err);
+          const errorMessage =
+            err.error?.message || 'Failed to update grades. Please try again.';
+          this._toastr.error(errorMessage);
           this.isLoading.emit(false);
         },
       });
