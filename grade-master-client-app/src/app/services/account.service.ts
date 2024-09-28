@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { User } from '../models/user.model';
+import { IChangePasswordData, User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +21,10 @@ export class AccountService {
 
   get teacherId() {
     return this.currentUser()?.id;
+  }
+
+  get teacherEmail() {
+    return this.currentUser()?.email;
   }
 
   register(model: any) {
@@ -52,5 +56,12 @@ export class AccountService {
     const user = userJson ? JSON.parse(userJson) : null;
     this.currentUser.set(user);
     this.loadingUser.set(false);
+  }
+
+  changePassword(changePasswordData: IChangePasswordData): Observable<any> {
+    return this._http.post(
+      this.baseUrl + 'change-password',
+      changePasswordData
+    );
   }
 }

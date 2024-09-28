@@ -44,5 +44,16 @@ namespace GradeMasterApp.Services
             var filter = Builders<Teacher>.Filter.Eq(teacher => teacher.Email, email);
             return await collection.Find(filter).SingleOrDefaultAsync();
         }
+
+        public async Task UpdateTeacherPasswordAsync(string teacherId, byte[] newPasswordHash, byte[] newPasswordSalt)
+        {
+            var collection = GetCollection<Teacher>("teachers");
+            var filter = Builders<Teacher>.Filter.Eq(t => t.Id, teacherId);
+            var update = Builders<Teacher>.Update
+                .Set(t => t.PasswordHash, newPasswordHash)
+                .Set(t => t.PasswordSalt, newPasswordSalt);
+
+            await collection.UpdateOneAsync(filter, update);
+        }
     }
 }

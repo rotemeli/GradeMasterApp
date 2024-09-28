@@ -66,18 +66,17 @@ export class RegistrationComponent implements OnInit {
 
   register() {
     this._accountSvc.register(this.registrationForm.value).subscribe({
-      next: (_) => this._router.navigate(['/']),
-      error: (error) => {
-        throw error;
+      next: () => {
+        this.registrationForm.reset();
+        this._toastr.success('Registration is complete.');
+        this._router.navigate(['/']);
       },
+      error: (error) => console.log(error),
     });
   }
 
   onSubmit() {
     if (!this.registrationForm.valid) return;
     this.register();
-    this.registrationForm.reset();
-    this._toastr.success('Registration is complete.');
-    this._router.navigate(['/']);
   }
 }

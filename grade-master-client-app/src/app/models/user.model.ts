@@ -5,3 +5,9 @@ export interface User {
   lastName: string;
   institution: string;
 }
+
+export interface IChangePasswordData {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+}
