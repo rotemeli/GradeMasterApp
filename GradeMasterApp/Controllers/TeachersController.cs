@@ -93,5 +93,28 @@ namespace GradeMasterApp.Controllers
             var user = await _mongoDBContext.GetTeacherAsync(email.ToLower());
             return user != null;
         }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDto)
+        {
+            var teacher = await _mongoDBContext.GetTeacherAsync(changePasswordDto.Email.ToLower());
+            if (teacher == null) return NotFound("Teacher not found");
+
+            // Verify the current password
+            using var hmac = new HMACSHA512(teacher.PasswordSalt);
+            var currentPasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(changePasswordDto.CurrentPassword));
+            for (int i = 0; i < currentPasswordHash.Length; i++)
+            {
+                if (currentPasswordHash[i] != teacher.PasswordHash[i]) return BadRequest(new { Message = "Current password is incorrect" });
+            }
+
+            // Update with new password
+            using var newHmac = new HMACSHA512();
+            var newPasswordHash = newHmac.ComputeHash(Encoding.UTF8.GetBytes(changePasswordDto.NewPassword));
+            var newPasswordSalt = newHmac.Key;
+
+            await _mongoDBContext.UpdateTeacherPasswordAsync(teacher.Id, newPasswordHash, newPasswordSalt);
+            return Ok(new { Message = "Password changed successfully." });
+        }
     }
 }

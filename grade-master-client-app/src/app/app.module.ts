@@ -54,6 +54,7 @@ import { FinalGradesTableComponent } from './components/final-grades/final-grade
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FinalGradesComponent,
     FinalGradesTableComponent,
     StatisticsComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
