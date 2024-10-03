@@ -21,6 +21,7 @@ namespace GradeMasterApp.Controllers
             _studentRepository = studentRepository;
         }
 
+        // Creates a new exam and associates it with a course
         [HttpPost("add-new-exam")]
         public async Task<IActionResult> CreateExam([FromBody] AddExamToCourseDTO dto)
         {
@@ -29,12 +30,14 @@ namespace GradeMasterApp.Controllers
                 return BadRequest("Exam data is missing.");
             }
 
+            // Get the course by ID
             var course = await _courseRepository.GetCourseByIdAsync(dto.CourseId);
             if (course == null)
             {
                 return NotFound("Course not found.");
             }
 
+            // Create a new exam object
             var exam = new Exam
             {
                 CourseId = dto.CourseId,
@@ -51,6 +54,7 @@ namespace GradeMasterApp.Controllers
             return Ok(exam);
         }
 
+        // Retrieves an exam by the course ID
         [HttpGet("get-course-exam/{courseId}")]
         public async Task<IActionResult> GetExamByCourseId(string courseId)
         {
@@ -64,7 +68,7 @@ namespace GradeMasterApp.Controllers
             return Ok(exam);
         }
 
-        // Update an exam by id
+        // Updates an existing exam by its ID
         [HttpPut("update-exam/{id}")]
         public async Task<IActionResult> UpdateExam([FromRoute] string id, [FromBody] AddExamToCourseDTO examDto)
         {
@@ -125,6 +129,7 @@ namespace GradeMasterApp.Controllers
             return Ok(new { Message = "Exam deleted successfully" });
         }
 
+        // Helper method to remove exam submission from a student
         private async Task RemoveExamSubmissionFromStudentAsync(Student student, string examId)
         {
             student.AssignmentsSubmissions.RemoveAll(sub => sub.AssignmentId == examId);

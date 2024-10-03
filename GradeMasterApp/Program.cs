@@ -21,7 +21,6 @@ builder.Services.AddSingleton<MongoDBService>();
 builder.Services.AddScoped<CourseRepository>();
 builder.Services.AddScoped<EnrollmentRepository>();
 builder.Services.AddScoped<StudentRepository>();
-builder.Services.AddScoped<AttendanceRepository>();
 builder.Services.AddScoped<AssignmentRepository>();
 builder.Services.AddScoped<ExamRepository>();
 

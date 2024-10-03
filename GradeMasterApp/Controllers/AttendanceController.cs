@@ -35,6 +35,8 @@ namespace GradeMasterApp.Controllers
             }
 
             var courseId = attendanceReport.First().First().CourseId;
+
+            // Get the course by ID
             var course = await _courseRepository.GetCourseByIdAsync(courseId);
             if (course == null)
                 return NotFound("Course not found.");
@@ -42,6 +44,7 @@ namespace GradeMasterApp.Controllers
             var enrollments = await _enrollmentRepository.GetEnrollmentsByCourseIdAsync(courseId);
             var studentIds = enrollments.Select(e => e.StudentId).ToList();
 
+            // Check if students are found for the course
             if (!studentIds.Any())
             {
                 return NotFound("No students found for this course.");
@@ -51,6 +54,7 @@ namespace GradeMasterApp.Controllers
 
             var tasks = new List<Task>();
 
+            // Process each attendance record in the report
             foreach (var attendanceDto in attendanceReport)
             {
                 var student = students.FirstOrDefault(s => s.StudentId == attendanceDto.First().StudentId);
@@ -102,9 +106,11 @@ namespace GradeMasterApp.Controllers
                     }
                 }
 
+                // Add the task for updating the student's attendance in the database
                 tasks.Add(_studentRepository.UpdateStudentAsync(student));
             }
 
+            // Execute all tasks to update student records
             await Task.WhenAll(tasks);
 
             await _courseRepository.UpdateCourseAsync(course);

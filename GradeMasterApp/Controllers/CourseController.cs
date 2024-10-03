@@ -68,6 +68,7 @@ namespace GradeMasterApp.Controllers
             return Ok(new { Message = "Course created successfully" });
         }
 
+        // Helper method to enroll a student in a course
         private async Task EnrollStudentAsync(StudentDTO studentDto, Course course)
         {
             // Find the student by StudentId or create a new one if not found
@@ -222,6 +223,7 @@ namespace GradeMasterApp.Controllers
             }
         }
 
+        // Helper method to delete an enrollment and update the student's records
         private async Task DeleteEnrollmentAndUpdateStudentAsync(string enrollmentId, List<string> assignmentIds, string courseId)
         {
             var enrollment = await _enrollmentRepository.GetEnrollmentByIdAsync(enrollmentId).ConfigureAwait(false);

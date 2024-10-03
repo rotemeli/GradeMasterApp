@@ -16,28 +16,33 @@ namespace GradeMasterApp.Services
             _database = client.GetDatabase(mongoSettings.Value.DatabaseName);
         }
 
+        // Method to return the MongoDB database instance
         public IMongoDatabase GetDatabase()
         {
             return _database;
         }
 
+        // Generic method to retrieve a collection of a specific type by its name
         public IMongoCollection<T> GetCollection<T>(string name)
         {
             return _database.GetCollection<T>(name);
         }
 
+        // Create a new Teacher object in the "teachers" collection
         public async Task CreateTeacherAsync(Teacher teacher)
         {
             var collection = GetCollection<Teacher>("teachers");
             await collection.InsertOneAsync(teacher);
         }
 
+        // Returns all Teachers
         public async Task<List<Teacher>> GetTeachersAsync()
         {
             var collection = GetCollection<Teacher>("teachers");
             return await collection.Find(new BsonDocument()).ToListAsync();
         }
 
+        // Get a Teacher by email
         public async Task<Teacher> GetTeacherAsync(string email)
         {
             var collection = GetCollection<Teacher>("teachers");
@@ -45,6 +50,7 @@ namespace GradeMasterApp.Services
             return await collection.Find(filter).SingleOrDefaultAsync();
         }
 
+        // Update the password hash and salt for a specific teacher
         public async Task UpdateTeacherPasswordAsync(string teacherId, byte[] newPasswordHash, byte[] newPasswordSalt)
         {
             var collection = GetCollection<Teacher>("teachers");

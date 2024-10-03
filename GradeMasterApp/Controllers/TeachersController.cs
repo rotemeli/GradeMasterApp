@@ -19,6 +19,7 @@ namespace GradeMasterApp.Controllers
             _mongoDBContext = mongoDBService;
         }
 
+        // Registers a new teacher
         [HttpPost("register")]
         public async Task<ActionResult<TeacherDTO>> Register(RegisterDTO registerDto)
         {
@@ -50,6 +51,7 @@ namespace GradeMasterApp.Controllers
             return Ok();
         }
 
+        // Authenticates a teacher based on their email and password
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginDTO loginDto)
         {
@@ -82,7 +84,7 @@ namespace GradeMasterApp.Controllers
             });
         }
 
-
+        // Helper method to check if a teacher with a specific email exists
         private async Task<bool> TeacherExists(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -94,6 +96,7 @@ namespace GradeMasterApp.Controllers
             return user != null;
         }
 
+        // Changes the password for a teacher
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDto)
         {

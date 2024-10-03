@@ -21,6 +21,7 @@ namespace GradeMasterApp.Controllers
             _studentRepository = studentRepository;
         }
 
+        // Adds a new assignment to a specific course
         [HttpPost("add-new-assignment")]
         public async Task<IActionResult> CreateAssignment([FromBody] AddAssignmentToCourseDTO dto)
         {
@@ -65,7 +66,7 @@ namespace GradeMasterApp.Controllers
             return Ok(assignments);
         }
 
-        // Update a assignment by id
+        // Updates an existing assignment by its ID
         [HttpPut("update-assignment/{id}")]
         public async Task<IActionResult> UpdateAssignment([FromRoute] string id, [FromBody] AddAssignmentToCourseDTO assignmentDto)
         {
@@ -127,6 +128,7 @@ namespace GradeMasterApp.Controllers
             return Ok(new { Message = "Assignment deleted successfully" });
         }
 
+        // Helper method to remove assignment submission from a student
         private async Task RemoveAssignmentSubmissionFromStudentAsync(Student student, string assignmentId)
         {
             student.AssignmentsSubmissions.RemoveAll(sub => sub.AssignmentId == assignmentId);

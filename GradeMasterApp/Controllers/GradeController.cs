@@ -23,6 +23,7 @@ namespace GradeMasterApp.Controllers
             _enrollmentRepository = enrollmentRepository;
         }
 
+        // Updates the grades for students for an assignment or exam
         [HttpPost("update-grades")]
         public async Task<IActionResult> UpdateGrades([FromBody] GradesDTO gradesReport)
         {
@@ -62,6 +63,7 @@ namespace GradeMasterApp.Controllers
                 if (result != null) skippedStudents.Add(result);
             }
 
+            // Handle scenarios where no students were updated
             if (skippedStudents.Count == gradesReport.Grades.Count)
             {
                 return BadRequest(new { Message = "No grades were updated. All students were either not enrolled or not found." });
@@ -79,6 +81,7 @@ namespace GradeMasterApp.Controllers
             return Ok(new { Message = "Grades updated successfully for all students." });
         }
 
+        // Helper method to process grade update for each student
         private async Task<string?> ProcessGradeUpdateAsync(string courseId, string taskId, StudentGrade studentGrade)
         {
             var student = await _studentRepository.GetStudentByStudentIdAsync(studentGrade.StudentId).ConfigureAwait(false);
@@ -112,6 +115,7 @@ namespace GradeMasterApp.Controllers
             return null;  // Return null if successful
         }
 
+        // Helper method to check if a student is enrolled in a course
         private async Task<bool> IsStudentEnrolledInCourseAsync(Student student, string courseId)
         {
             // Check if the student has an enrollment for the given course
@@ -120,6 +124,7 @@ namespace GradeMasterApp.Controllers
             return enrollment != null;
         }
 
+        // Get the final grades for all students in a course
         [HttpGet("course-final-grades/{courseId}")]
         public async Task<IActionResult> GetCourseFinalGrades(string courseId)
         {

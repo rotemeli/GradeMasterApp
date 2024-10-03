@@ -22,6 +22,7 @@ namespace GradeMasterApp.Controllers
             _courseRepository = courseRepository;
         }
 
+        // Get all students enrolled in a specific course
         [HttpGet("get-students-by-course/{courseId}")]
         public async Task<IActionResult> GetStudentsByCourse(string courseId)
         {
@@ -41,6 +42,7 @@ namespace GradeMasterApp.Controllers
             return Ok(students);
         }
 
+        // Adds a new student to a course
         [HttpPost("add-new-student")]
         public async Task<IActionResult> AddNewStudent([FromBody] AddStudentToCourseDTO dto)
         {
@@ -96,6 +98,7 @@ namespace GradeMasterApp.Controllers
             return Ok(student);
         }
 
+        // Removes a student from a specific course
         [HttpDelete("remove-student-from-course/{courseId}/{studentId}")]
         public async Task<IActionResult> DeleteStudentFromCourse(string courseId, string studentId)
         {
@@ -133,6 +136,7 @@ namespace GradeMasterApp.Controllers
             return Ok(new { Message = "Student removed from course successfully." });
         }
 
+        // Stores the final grades for students in a course
         [HttpPost("final-grade")]
         public async Task<IActionResult> StoreFinalGrades([FromBody] List<FinalGradeDTO> finalGradesDto)
         {
@@ -150,13 +154,14 @@ namespace GradeMasterApp.Controllers
                     tasks.Add(_studentRepository.AddOrUpdateFinalGradeAsync(finalGrade.StudentId, finalGrade.CourseId, finalGrade.FinalGradeValue));
                 }
 
+                // Execute all tasks in parallel
                 await Task.WhenAll(tasks);
 
                 return Ok(new { message = "Final grades stored successfully." });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message); // Handle exceptions
+                return StatusCode(500, ex.Message);
             }
         }
 
