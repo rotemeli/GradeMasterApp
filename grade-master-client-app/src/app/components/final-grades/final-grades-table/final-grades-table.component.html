@@ -34,7 +34,9 @@
       <!-- Final Grade Column -->
       <ng-container matColumnDef="finalGrade">
         <th mat-header-cell *matHeaderCellDef>Final Grade</th>
-        <td mat-cell *matCellDef="let element">{{ element.finalGrade }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.finalGrade | number : '1.0-2' }}
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
