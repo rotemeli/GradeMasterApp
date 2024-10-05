@@ -72,12 +72,11 @@ export class UpdateGradesComponent implements OnInit {
   get filteredStudents(): ITaskStudentData[] {
     const term = this.searchTerm.toLowerCase();
 
-    const filtered = this.students.filter(
-      (student) =>
-        student.firstName.toLowerCase().includes(term) ||
-        student.lastName.toLowerCase().includes(term) ||
-        student.studentId.toString().toLowerCase().includes(term)
-    );
+    const filtered = this.students.filter((student) => {
+      const fullName = `${student.firstName} ${student.lastName}`.toLowerCase();
+      const studentId = student.studentId.toString();
+      return fullName.includes(term) || studentId.includes(term);
+    });
 
     // sort the filtered students by last name
     return filtered.sort((a, b) => {
